@@ -1,0 +1,187 @@
+﻿@model ProjetoPericiaContabil.Models.Usuario
+
+@{
+    Layout = null;
+}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'DM Sans', sans-serif;
+        height: 100vh;
+        overflow: hidden;
+        /* FUNDO BONITO */
+        background: linear-gradient(135deg, #1a2332, #243044, #0f172a);
+    }
+
+    /* EFEITO DE LUZ (BOLHAS) */
+    .bg-circle {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.3;
+    }
+
+    .circle1 {
+        width: 300px;
+        height: 300px;
+        background: #c9a84c;
+        top: 10%;
+        left: 10%;
+    }
+
+    .circle2 {
+        width: 400px;
+        height: 400px;
+        background: #3b82f6;
+        bottom: 10%;
+        right: 10%;
+    }
+
+    .registro-page {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* CARD GLASS */
+    .registro-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.1);
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        border-radius: 10px;
+        overflow: hidden;
+        animation: fadeUp 0.5s ease;
+    }
+
+    @@keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .registro-header {
+        padding: 2rem;
+        text-align: center;
+    }
+
+        .registro-header h2 {
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .registro-header p {
+            color: #ccc;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+    .registro-body {
+        padding: 2rem;
+    }
+
+        .registro-body input {
+            width: 100%;
+            height: 45px;
+            margin-bottom: 1rem;
+            padding: 0 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            outline: none;
+            transition: 0.2s;
+        }
+
+            .registro-body input::placeholder {
+                color: #ccc;
+            }
+
+            .registro-body input:focus {
+                border-color: #c9a84c;
+                background: rgba(255,255,255,0.15);
+            }
+
+        .registro-body button {
+            width: 100%;
+            height: 45px;
+            background: linear-gradient(135deg, #c9a84c, #e0c36c);
+            color: #1a2332;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.2s;
+        }
+
+            .registro-body button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 20px rgba(201,168,76,0.4);
+            }
+
+    .login-link {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 13px;
+        color: #ccc;
+    }
+
+        .login-link a {
+            color: #c9a84c;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+            .login-link a:hover {
+                text-decoration: underline;
+            }
+</style>
+
+<!-- FUNDO -->
+<div class="bg-circle circle1"></div>
+<div class="bg-circle circle2"></div>
+
+<div class="registro-page">
+    <div class="registro-card">
+
+        <div class="registro-header">
+            <h2>Perícia Contábil</h2>
+            <p>Crie sua conta para continuar</p>
+        </div>
+
+        <div class="registro-body">
+            <form method="post">
+                <input type="text" name="Nome" placeholder="Nome completo" required />
+                <input type="email" name="Email" placeholder="Email" required />
+                <input type="password" name="Senha" placeholder="Senha" required />
+
+                <button type="submit">Cadastrar</button>
+            </form>
+
+            <div class="login-link">
+                Já tem conta?
+                <a href="/Usuario/Login">Entrar</a>
+            </div>
+        </div>
+
+    </div>
+</div>

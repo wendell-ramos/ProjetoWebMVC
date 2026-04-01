@@ -1,0 +1,164 @@
+﻿@model List<ProjetoPericiaContabil.Models.Usuario>
+
+@{
+    Layout = null;
+}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'DM Sans', sans-serif;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #1a2332, #243044, #0f172a);
+        color: #fff;
+    }
+
+    /* Fundo glow */
+    .bg-circle {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.3;
+    }
+
+    .circle1 {
+        width: 300px;
+        height: 300px;
+        background: #c9a84c;
+        top: 10%;
+        left: 10%;
+    }
+
+    .circle2 {
+        width: 400px;
+        height: 400px;
+        background: #3b82f6;
+        bottom: 10%;
+        right: 10%;
+    }
+
+    .container {
+        padding: 40px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .header {
+        margin-bottom: 30px;
+    }
+
+        .header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .header p {
+            color: #ccc;
+            font-size: 13px;
+        }
+
+    /* Card */
+    .card {
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        text-align: left;
+        padding: 14px;
+        font-size: 13px;
+        color: #c9a84c;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    td {
+        padding: 14px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        font-size: 14px;
+    }
+
+    tr:hover {
+        background: rgba(255,255,255,0.05);
+    }
+
+    /* Botão */
+    .btn {
+        padding: 6px 12px;
+        background: linear-gradient(135deg, #c9a84c, #e0c36c);
+        color: #1a2332;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+        .btn:hover {
+            box-shadow: 0 5px 15px rgba(201,168,76,0.4);
+        }
+
+    .badge {
+        font-size: 12px;
+        padding: 4px 8px;
+        border-radius: 4px;
+        background: rgba(255,255,255,0.1);
+    }
+</style>
+
+<!-- Fundo -->
+<div class="bg-circle circle1"></div>
+<div class="bg-circle circle2"></div>
+
+<div class="container">
+
+    <div class="header">
+        <h2>Painel do Admin</h2>
+        <p>Gerencie usuários e permissões</p>
+    </div>
+
+    <div class="card">
+        <table>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Tipo</th>
+                <th>Ação</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Nome</td>
+                    <td>@item.Email</td>
+
+                    <td>
+                        <span class="badge">@item.Tipo</span>
+                    </td>
+
+                    <td>
+                        @if (item.Tipo == "Cliente")
+                        {
+                            <a class="btn" href="@Url.Action("TornarFuncionario", "Usuario", new { id = item.Id })">
+                                Tornar Funcionário
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+</div>

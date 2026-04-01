@@ -1,0 +1,193 @@
+﻿@model List<ProjetoPericiaContabil.Models.Atividade>
+
+@{
+    Layout = null;
+}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'DM Sans', sans-serif;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #1a2332, #243044, #0f172a);
+        color: #fff;
+    }
+
+    .bg-circle {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.3;
+    }
+
+    .circle1 {
+        width: 300px;
+        height: 300px;
+        background: #c9a84c;
+        top: 10%;
+        left: 10%;
+    }
+
+    .circle2 {
+        width: 400px;
+        height: 400px;
+        background: #3b82f6;
+        bottom: 10%;
+        right: 10%;
+    }
+
+    .container {
+        padding: 40px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+        .header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            margin: 0;
+        }
+
+    .btn-top {
+        padding: 8px 14px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 6px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 13px;
+        transition: 0.2s;
+    }
+
+        .btn-top:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+    .card {
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        padding: 14px;
+        text-align: left;
+        font-size: 13px;
+        color: #c9a84c;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    td {
+        padding: 14px;
+        font-size: 14px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    tr:hover {
+        background: rgba(255,255,255,0.05);
+    }
+
+    .badge {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        background: rgba(255,255,255,0.1);
+    }
+
+        .badge.elab {
+            color: #facc15;
+        }
+
+        .badge.done {
+            color: #22c55e;
+        }
+
+    .btn {
+        padding: 6px 12px;
+        background: linear-gradient(135deg, #c9a84c, #e0c36c);
+        color: #1a2332;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+        .btn:hover {
+            box-shadow: 0 5px 15px rgba(201,168,76,0.4);
+        }
+</style>
+
+<!-- Fundo -->
+<div class="bg-circle circle1"></div>
+<div class="bg-circle circle2"></div>
+
+<div class="container">
+
+    <div class="header">
+        <h2>Minhas Atividades</h2>
+
+        <a class="btn-top" href="@Url.Action("Disponiveis", "Atividade")">
+            Ver Disponíveis
+        </a>
+    </div>
+
+    <div class="card">
+        <table>
+            <tr>
+                <th>Título</th>
+                <th>Status</th>
+                <th>Ação</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Titulo</td>
+
+                    <td>
+                        @if (item.Status == "EmElaboracao")
+                        {
+                            <span class="badge elab">Em elaboração</span>
+                        }
+                        else if (item.Status == "Concluida")
+                        {
+                            <span class="badge done">Concluída</span>
+                        }
+                        else
+                        {
+                            <span class="badge">@item.Status</span>
+                        }
+                    </td>
+
+                    <td>
+                        @if (item.Status == "EmElaboracao")
+                        {
+                            <a class="btn" href="@Url.Action("Finalizar", "Atividade", new { id = item.Id })">
+                                Finalizar
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+</div>
