@@ -43,6 +43,8 @@
         padding: 40px;
         position: relative;
         z-index: 1;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .header {
@@ -50,6 +52,7 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 25px;
+        gap: 20px;
     }
 
         .header h2 {
@@ -57,6 +60,13 @@
             font-size: 28px;
             margin: 0;
         }
+
+    .header-buttons {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: flex-end;
+    }
 
     .btn-top {
         padding: 8px 14px;
@@ -66,9 +76,31 @@
         text-decoration: none;
         font-size: 13px;
         transition: 0.2s;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
         .btn-top:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+    .btn-logout {
+        padding: 8px 14px;
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 13px;
+        transition: 0.2s;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .btn-logout:hover {
             background: rgba(255,255,255,0.2);
         }
 
@@ -98,6 +130,7 @@
         padding: 14px;
         font-size: 14px;
         border-bottom: 1px solid rgba(255,255,255,0.05);
+        vertical-align: top;
     }
 
     tr:hover {
@@ -119,6 +152,12 @@
             color: #22c55e;
         }
 
+    .descricao {
+        color: #ddd;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
     .btn {
         padding: 6px 12px;
         background: linear-gradient(135deg, #c9a84c, #e0c36c);
@@ -128,6 +167,8 @@
         font-size: 12px;
         font-weight: bold;
         transition: 0.2s;
+        display: inline-block;
+        white-space: nowrap;
     }
 
         .btn:hover {
@@ -135,24 +176,33 @@
         }
 </style>
 
-<!-- Fundo -->
 <div class="bg-circle circle1"></div>
 <div class="bg-circle circle2"></div>
 
 <div class="container">
-
     <div class="header">
         <h2>Minhas Atividades</h2>
 
-        <a class="btn-top" href="@Url.Action("Disponiveis", "Atividade")">
-            Ver Disponíveis
-        </a>
+        <div class="header-buttons">
+            <a class="btn-top" href="@Url.Action("Disponiveis", "Atividade")">
+                Ver Disponíveis
+            </a>
+
+            <a class="btn-top" href="@Url.Action("Arquivadas", "Atividade")">
+                Arquivadas
+            </a>
+
+            <a class="btn-logout" href="@Url.Action("Logout", "Usuario")">
+                Sair
+            </a>
+        </div>
     </div>
 
     <div class="card">
         <table>
             <tr>
                 <th>Título</th>
+                <th>Descrição</th>
                 <th>Status</th>
                 <th>Ação</th>
             </tr>
@@ -161,6 +211,7 @@
             {
                 <tr>
                     <td>@item.Titulo</td>
+                    <td><div class="descricao">@item.Descricao</div></td>
 
                     <td>
                         @if (item.Status == "EmElaboracao")
@@ -184,10 +235,15 @@
                                 Finalizar
                             </a>
                         }
+                        else if (item.Status == "Concluida" && item.ClienteVisualizou == false)
+                        {
+                            <a class="btn" href="@Url.Action("EditarResultado", "Atividade", new { id = item.Id })">
+                                Editar Resultado
+                            </a>
+                        }
                     </td>
                 </tr>
             }
         </table>
     </div>
-
 </div>

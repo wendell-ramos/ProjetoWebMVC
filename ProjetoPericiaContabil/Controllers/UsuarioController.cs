@@ -67,6 +67,11 @@ namespace ProjetoPericiaContabil.Controllers
 
             return RedirectToAction("Index");
         }
+        public ActionResult Logout()
+        {
+            Session.Clear(); // limpa tudo da sessão
+            return RedirectToAction("Login");
+        }
 
     }
 }

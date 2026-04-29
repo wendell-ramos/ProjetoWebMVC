@@ -17,7 +17,7 @@ namespace ProjetoPericiaContabil.Models
         public int? FuncionarioId { get; set; }
 
         public string TipoCalculo { get; set; }
-        // Civel, Trabalhista, Tributario, Previdenciario
         public string Resultado { get; set; }
+        public bool ClienteVisualizou { get; set; } = false;
     }
 }

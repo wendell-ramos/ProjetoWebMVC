@@ -16,6 +16,21 @@
         color: #fff;
     }
 
+    .btn-logout {
+        padding: 8px 14px;
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 13px;
+        transition: 0.2s;
+        white-space: nowrap;
+    }
+
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
     .bg-circle {
         position: absolute;
         border-radius: 50%;
@@ -43,6 +58,8 @@
         padding: 40px;
         position: relative;
         z-index: 1;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .header {
@@ -50,6 +67,8 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 25px;
+        gap: 20px;
+        flex-wrap: wrap;
     }
 
         .header h2 {
@@ -57,6 +76,14 @@
             font-size: 28px;
             margin: 0;
         }
+
+    .header-buttons {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+    }
 
     .btn-top {
         padding: 8px 14px;
@@ -66,6 +93,7 @@
         text-decoration: none;
         font-size: 13px;
         transition: 0.2s;
+        white-space: nowrap;
     }
 
         .btn-top:hover {
@@ -98,6 +126,7 @@
         padding: 14px;
         font-size: 14px;
         border-bottom: 1px solid rgba(255,255,255,0.05);
+        vertical-align: top;
     }
 
     tr:hover {
@@ -113,6 +142,8 @@
         font-size: 12px;
         font-weight: bold;
         transition: 0.2s;
+        display: inline-block;
+        white-space: nowrap;
     }
 
         .btn:hover {
@@ -144,15 +175,22 @@
     <div class="header">
         <h2>Atividades Disponíveis</h2>
 
-        <a class="btn-top" href="@Url.Action("MinhasFuncionario", "Atividade")">
-            Minhas Atividades
-        </a>
+        <div class="header-buttons">
+            <a class="btn-top" href="@Url.Action("MinhasFuncionario", "Atividade")">
+                Minhas Atividades
+            </a>
+
+            <a class="btn-logout" href="@Url.Action("Logout", "Usuario")">
+                Sair
+            </a>
+        </div>
     </div>
 
     <div class="card">
         <table>
             <tr>
                 <th>Título</th>
+                <th>Descrição</th>
                 <th>Tipo</th>
                 <th>Ação</th>
             </tr>
@@ -161,8 +199,8 @@
             {
                 <tr>
                     <td>@item.Titulo</td>
+                    <td>@item.Descricao</td>
                     <td>@item.TipoCalculo</td>
-
                     <td>
                         <a class="btn" href="@Url.Action("Pegar", "Atividade", new { id = item.Id })">
                             Pegar

@@ -35,7 +35,7 @@ namespace ProjetoPericiaContabil.Controllers
             db.Atividades.Add(atividade);
             db.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Minhas");
         }
         public ActionResult Pegar(int id)
         {
@@ -86,7 +86,7 @@ namespace ProjetoPericiaContabil.Controllers
             var funcionarioId = (int)Session["UsuarioId"];
 
             var atividades = db.Atividades
-                .Where(a => a.FuncionarioId == funcionarioId)
+                .Where(a => a.FuncionarioId == funcionarioId && a.ClienteVisualizou == false)
                 .ToList();
 
             return View(atividades);
@@ -121,6 +121,74 @@ namespace ProjetoPericiaContabil.Controllers
 
             atividadeDb.Resultado = atividade.Resultado;
             atividadeDb.Status = "Concluida";
+            atividadeDb.ClienteVisualizou = false;
+
+            db.SaveChanges();
+
+            return RedirectToAction("MinhasFuncionario");
+        }
+        public ActionResult ConfirmarLeitura(int id)
+        {
+            var usuarioId = (int)Session["UsuarioId"];
+
+            var atividade = db.Atividades.Find(id);
+
+            if (atividade == null || atividade.ClienteId != usuarioId)
+            {
+                return RedirectToAction("Minhas");
+            }
+
+            atividade.ClienteVisualizou = true;
+            db.SaveChanges();
+
+            return RedirectToAction("Minhas");
+        }
+        public ActionResult Arquivadas()
+        {
+            if (Session["Tipo"]?.ToString() != "Funcionario")
+                return RedirectToAction("Login", "Usuario");
+
+            var funcionarioId = (int)Session["UsuarioId"];
+
+            var atividades = db.Atividades
+                .Where(a => a.FuncionarioId == funcionarioId && a.ClienteVisualizou == true)
+                .ToList();
+
+            return View(atividades);
+        }
+        public ActionResult EditarResultado(int id)
+        {
+            if (Session["Tipo"]?.ToString() != "Funcionario")
+                return RedirectToAction("Login", "Usuario");
+
+            var atividade = db.Atividades.Find(id);
+            var funcionarioId = (int)Session["UsuarioId"];
+
+            if (atividade == null || atividade.FuncionarioId != funcionarioId)
+                return RedirectToAction("MinhasFuncionario");
+
+            if (atividade.ClienteVisualizou)
+                return RedirectToAction("MinhasFuncionario");
+
+            return View(atividade);
+        }
+
+        [HttpPost]
+        public ActionResult EditarResultado(Atividade atividade)
+        {
+            if (Session["Tipo"]?.ToString() != "Funcionario")
+                return RedirectToAction("Login", "Usuario");
+
+            var atividadeDb = db.Atividades.Find(atividade.Id);
+            var funcionarioId = (int)Session["UsuarioId"];
+
+            if (atividadeDb == null || atividadeDb.FuncionarioId != funcionarioId)
+                return RedirectToAction("MinhasFuncionario");
+
+            if (atividadeDb.ClienteVisualizou)
+                return RedirectToAction("MinhasFuncionario");
+
+            atividadeDb.Resultado = atividade.Resultado;
 
             db.SaveChanges();
 

@@ -145,6 +145,18 @@
     <Compile Include="Migrations\202604012206270_AddResultado.Designer.cs">
       <DependentUpon>202604012206270_AddResultado.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202604072015428_teste.cs" />
+    <Compile Include="Migrations\202604072015428_teste.Designer.cs">
+      <DependentUpon>202604072015428_teste.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202604072234088_CriarArquivados.cs" />
+    <Compile Include="Migrations\202604072234088_CriarArquivados.Designer.cs">
+      <DependentUpon>202604072234088_CriarArquivados.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202604290613016_Migrationtestegit.cs" />
+    <Compile Include="Migrations\202604290613016_Migrationtestegit.Designer.cs">
+      <DependentUpon>202604290613016_Migrationtestegit.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Atividade.cs" />
@@ -211,6 +223,8 @@
     <Content Include="Views\Atividade\Disponiveis.cshtml" />
     <Content Include="Views\Atividade\MinhasFuncionario.cshtml" />
     <Content Include="Views\Atividade\Finalizar.cshtml" />
+    <Content Include="Views\Atividade\Arquivadas.cshtml" />
+    <Content Include="Views\Atividade\EditarResultado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -251,6 +265,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202604012206270_AddResultado.resx">
       <DependentUpon>202604012206270_AddResultado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202604072015428_teste.resx">
+      <DependentUpon>202604072015428_teste.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202604072234088_CriarArquivados.resx">
+      <DependentUpon>202604072234088_CriarArquivados.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202604290613016_Migrationtestegit.resx">
+      <DependentUpon>202604290613016_Migrationtestegit.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

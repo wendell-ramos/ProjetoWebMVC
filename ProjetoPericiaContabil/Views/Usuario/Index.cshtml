@@ -15,6 +15,19 @@
         background: linear-gradient(135deg, #1a2332, #243044, #0f172a);
         color: #fff;
     }
+    .btn-logout {
+        padding: 8px 14px;
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 13px;
+        transition: 0.2s;
+    }
+
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.2);
+        }
 
     /* Fundo glow */
     .bg-circle {
@@ -123,7 +136,11 @@
 <div class="bg-circle circle2"></div>
 
 <div class="container">
-
+    <div style="position:absolute; top:20px; right:20px;">
+        <a href="@Url.Action("Logout", "Usuario")" class="btn-logout">
+            Sair
+        </a>
+    </div>
     <div class="header">
         <h2>Painel do Admin</h2>
         <p>Gerencie usuários e permissões</p>

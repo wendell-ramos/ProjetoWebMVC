@@ -15,6 +15,19 @@
         background: linear-gradient(135deg, #1a2332, #243044, #0f172a);
         color: #fff;
     }
+    .btn-logout {
+        padding: 8px 14px;
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 13px;
+        transition: 0.2s;
+    }
+
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.2);
+        }
 
     .bg-circle {
         position: absolute;
@@ -82,7 +95,20 @@
     .info {
         font-size: 13px;
         color: #ccc;
+        margin-bottom: 15px;
+        line-height: 1.6;
+    }
+
+    .descricao-box {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 8px;
+        padding: 12px;
         margin-bottom: 20px;
+        color: #eee;
+        font-size: 14px;
+        line-height: 1.6;
+        white-space: pre-line;
     }
 
     textarea {
@@ -145,13 +171,25 @@
 <div class="bg-circle circle2"></div>
 
 <div class="container">
-
+    <div style="position:absolute; top:20px; right:20px;">
+        <a href="@Url.Action("Logout", "Usuario")" class="btn-logout">
+            Sair
+        </a>
+    </div>
     <div class="card">
 
         <h2>Finalizar Atividade</h2>
 
         <div class="info">
-            Atividade: <strong>@Model.Titulo</strong>
+            <strong>Atividade:</strong> @Model.Titulo
+        </div>
+
+        <div class="info">
+            <strong>Solicitação do cliente:</strong>
+        </div>
+
+        <div class="descricao-box">
+            @Model.Descricao
         </div>
 
         <form method="post">
