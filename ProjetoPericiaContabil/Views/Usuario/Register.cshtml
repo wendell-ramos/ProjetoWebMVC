@@ -11,13 +11,10 @@
     body {
         margin: 0;
         font-family: 'DM Sans', sans-serif;
-        height: 100vh;
-        overflow: hidden;
-        /* FUNDO BONITO */
+        min-height: 100vh;
         background: linear-gradient(135deg, #1a2332, #243044, #0f172a);
     }
 
-    /* EFEITO DE LUZ (BOLHAS) */
     .bg-circle {
         position: absolute;
         border-radius: 50%;
@@ -42,15 +39,15 @@
     }
 
     .registro-page {
-        height: 100vh;
+        min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
         position: relative;
         z-index: 1;
+        padding: 20px;
     }
 
-    /* CARD GLASS */
     .registro-card {
         background: rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(20px);
@@ -76,7 +73,7 @@
     }
 
     .registro-header {
-        padding: 2rem;
+        padding: 2rem 2rem 1rem 2rem;
         text-align: center;
     }
 
@@ -100,7 +97,7 @@
         .registro-body input {
             width: 100%;
             height: 45px;
-            margin-bottom: 1rem;
+            margin-bottom: 6px;
             padding: 0 12px;
             border-radius: 6px;
             border: 1px solid rgba(255,255,255,0.2);
@@ -108,6 +105,7 @@
             color: #fff;
             outline: none;
             transition: 0.2s;
+            box-sizing: border-box;
         }
 
             .registro-body input::placeholder {
@@ -154,9 +152,41 @@
             .login-link a:hover {
                 text-decoration: underline;
             }
+
+    .erro-box {
+        background: rgba(255, 80, 80, 0.15);
+        border: 1px solid rgba(255, 80, 80, 0.4);
+        color: #ffd6d6;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .field-validation-error {
+        color: #ffb3b3;
+        font-size: 12px;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .validation-summary-errors {
+        background: rgba(255, 80, 80, 0.15);
+        border: 1px solid rgba(255, 80, 80, 0.4);
+        color: #ffd6d6;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+
+        .validation-summary-errors ul {
+            margin: 0;
+            padding-left: 18px;
+        }
 </style>
 
-<!-- FUNDO -->
 <div class="bg-circle circle1"></div>
 <div class="bg-circle circle2"></div>
 
@@ -169,13 +199,29 @@
         </div>
 
         <div class="registro-body">
-            <form method="post">
-                <input type="text" name="Nome" placeholder="Nome completo" required />
-                <input type="email" name="Email" placeholder="Email" required />
-                <input type="password" name="Senha" placeholder="Senha" required />
+
+            @if (ViewBag.Erro != null)
+            {
+                <div class="erro-box">
+                    @ViewBag.Erro
+                </div>
+            }
+
+            @Html.ValidationSummary(false)
+
+            @using (Html.BeginForm("Register", "Usuario", FormMethod.Post))
+            {
+                @Html.TextBoxFor(model => model.Nome, new { placeholder = "Nome completo", required = "required" })
+                @Html.ValidationMessageFor(model => model.Nome)
+
+                @Html.TextBoxFor(model => model.Email, new { placeholder = "Email", type = "email", required = "required" })
+                @Html.ValidationMessageFor(model => model.Email)
+
+                @Html.PasswordFor(model => model.Senha, new { placeholder = "Senha", required = "required" })
+                @Html.ValidationMessageFor(model => model.Senha)
 
                 <button type="submit">Cadastrar</button>
-            </form>
+            }
 
             <div class="login-link">
                 Já tem conta?

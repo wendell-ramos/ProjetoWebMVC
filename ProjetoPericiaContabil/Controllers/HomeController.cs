@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace ProjetoPericiaContabil.Controllers
@@ -10,38 +7,57 @@ namespace ProjetoPericiaContabil.Controllers
     {
         public ActionResult Index()
         {
-            var tipo = Session["Tipo"]?.ToString();
-
-            if (tipo == null)
-                return RedirectToAction("Login", "Usuario");
-
-            if (tipo == "Admin")
-                return RedirectToAction("Index", "Usuario");
-
-            if (tipo == "Funcionario")
-                return RedirectToAction("Disponiveis", "Atividade");
-
-            if (tipo == "Cliente")
+            try
             {
-                return RedirectToAction("Minhas", "Atividade");
-            }
+                var tipo = Session["Tipo"]?.ToString();
 
-            return RedirectToAction("Login", "Usuario");
+                if (tipo == null)
+                    return RedirectToAction("Login", "Usuario");
+
+                if (tipo == "Admin")
+                    return RedirectToAction("Index", "Usuario");
+
+                if (tipo == "Funcionario")
+                    return RedirectToAction("Disponiveis", "Atividade");
+
+                if (tipo == "Cliente")
+                    return RedirectToAction("Minhas", "Atividade");
+
+                return RedirectToAction("Login", "Usuario");
+            }
+            catch (Exception ex)
+            {
+                TempData["Erro"] = "Erro ao carregar a página inicial.";
+                return RedirectToAction("Login", "Usuario");
+            }
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+            try
+            {
+                ViewBag.Message = "Your application description page.";
+                return View();
+            }
+            catch (Exception ex)
+            {
+                TempData["Erro"] = "Erro ao carregar a página sobre.";
+                return RedirectToAction("Index");
+            }
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            try
+            {
+                ViewBag.Message = "Your contact page.";
+                return View();
+            }
+            catch (Exception ex)
+            {
+                TempData["Erro"] = "Erro ao carregar a página de contato.";
+                return RedirectToAction("Index");
+            }
         }
-
     }
 }

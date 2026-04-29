@@ -133,6 +133,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CriptoHelper.cs" />
     <Compile Include="Migrations\202604010032486_InitialCreate.cs" />
     <Compile Include="Migrations\202604010032486_InitialCreate.Designer.cs">
       <DependentUpon>202604010032486_InitialCreate.cs</DependentUpon>
@@ -156,6 +157,18 @@
     <Compile Include="Migrations\202604290613016_Migrationtestegit.cs" />
     <Compile Include="Migrations\202604290613016_Migrationtestegit.Designer.cs">
       <DependentUpon>202604290613016_Migrationtestegit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202604290731158_AdicionandoValidacoesESenhaHash.cs" />
+    <Compile Include="Migrations\202604290731158_AdicionandoValidacoesESenhaHash.Designer.cs">
+      <DependentUpon>202604290731158_AdicionandoValidacoesESenhaHash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202604290740087_AjusteUsuarioTipo.cs" />
+    <Compile Include="Migrations\202604290740087_AjusteUsuarioTipo.Designer.cs">
+      <DependentUpon>202604290740087_AjusteUsuarioTipo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202604290751125_Ajuste.cs" />
+    <Compile Include="Migrations\202604290751125_Ajuste.Designer.cs">
+      <DependentUpon>202604290751125_Ajuste.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -274,6 +287,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202604290613016_Migrationtestegit.resx">
       <DependentUpon>202604290613016_Migrationtestegit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202604290731158_AdicionandoValidacoesESenhaHash.resx">
+      <DependentUpon>202604290731158_AdicionandoValidacoesESenhaHash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202604290740087_AjusteUsuarioTipo.resx">
+      <DependentUpon>202604290740087_AjusteUsuarioTipo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202604290751125_Ajuste.resx">
+      <DependentUpon>202604290751125_Ajuste.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

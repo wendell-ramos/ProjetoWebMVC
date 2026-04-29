@@ -381,3 +381,6 @@ C:\Users\USER\Documents\GitHub\ProjetoWebMVC\ProjetoPericiaContabil\obj\Debug\Pr
 C:\Users\USER\Documents\GitHub\ProjetoWebMVC\ProjetoPericiaContabil\obj\Debug\ProjetoPericiaContabil.dll
 C:\Users\USER\Documents\GitHub\ProjetoWebMVC\ProjetoPericiaContabil\obj\Debug\ProjetoPericiaContabil.pdb
 C:\Users\USER\Documents\GitHub\ProjetoWebMVC\ProjetoPericiaContabil\obj\Debug\ProjetoPericiaContabil.Migrations.Migrationtestegit.resources
+C:\Users\USER\Documents\GitHub\ProjetoWebMVC\ProjetoPericiaContabil\obj\Debug\ProjetoPericiaContabil.Migrations.AdicionandoValidacoesESenhaHash.resources
+C:\Users\USER\Documents\GitHub\ProjetoWebMVC\ProjetoPericiaContabil\obj\Debug\ProjetoPericiaContabil.Migrations.AjusteUsuarioTipo.resources
+C:\Users\USER\Documents\GitHub\ProjetoWebMVC\ProjetoPericiaContabil\obj\Debug\ProjetoPericiaContabil.Migrations.Ajuste.resources

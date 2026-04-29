@@ -1,77 +1,180 @@
-﻿using ProjetoPericiaContabil.Models;
+﻿using ProjetoPericiaContabil.Helpers;
+using ProjetoPericiaContabil.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace ProjetoPericiaContabil.Controllers
 {
     public class UsuarioController : Controller
     {
-        // GET: Usuario
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         public ActionResult Index()
         {
-            if (Session["Tipo"]?.ToString() != "Admin")
-                return RedirectToAction("Login");
+            try
+            {
+                if (Session["Tipo"]?.ToString() != "Admin")
+                    return RedirectToAction("Login");
 
-            var usuarios = db.Usuarios.ToList();
-            return View(usuarios);
+                var usuarios = db.Usuarios.ToList();
+                return View(usuarios);
+            }
+            catch (Exception)
+            {
+                TempData["Erro"] = "Erro ao carregar usuários.";
+                return RedirectToAction("Login");
+            }
         }
-        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ActionResult Register()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception)
+            {
+                TempData["Erro"] = "Erro ao abrir tela de cadastro.";
+                return RedirectToAction("Login");
+            }
         }
 
         [HttpPost]
         public ActionResult Register(Usuario usuario)
         {
-            usuario.Tipo = "Cliente"; // TODO mundo começa cliente
+            try
+            {
+                usuario.Tipo = "Cliente";
+                usuario.Cargo = null;
 
-            db.Usuarios.Add(usuario);
-            db.SaveChanges();
+                ModelState.Remove("Tipo");
+                ModelState.Remove("Cargo");
 
-            return RedirectToAction("Login");
+                if (!ModelState.IsValid)
+                {
+                    return View(usuario);
+                }
+
+                var emailJaExiste = db.Usuarios.Any(u => u.Email == usuario.Email);
+
+                if (emailJaExiste)
+                {
+                    ViewBag.Erro = "Este e-mail já está cadastrado.";
+                    return View(usuario);
+                }
+
+                usuario.Senha = CriptoHelper.HashSHA256(usuario.Senha);
+
+                db.Usuarios.Add(usuario);
+                db.SaveChanges();
+
+                TempData["Sucesso"] = "Cadastro realizado com sucesso!";
+                return RedirectToAction("Login");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Erro = "Erro ao cadastrar usuário: " + ex.Message;
+
+                if (ex.InnerException != null)
+                {
+                    ViewBag.Erro += " | Detalhe: " + ex.InnerException.Message;
+                }
+
+                return View(usuario);
+            }
         }
+
         public ActionResult Login()
         {
-            return View();
+            try
+            {
+                if (Session["UsuarioId"] != null)
+                    return RedirectToAction("Index", "Home");
+
+                return View();
+            }
+            catch (Exception)
+            {
+                TempData["Erro"] = "Erro ao abrir tela de login.";
+                return View();
+            }
         }
 
         [HttpPost]
         public ActionResult Login(string email, string senha)
         {
-            var user = db.Usuarios.FirstOrDefault(u => u.Email == email && u.Senha == senha);
-
-            if (user != null)
+            try
             {
-                Session["UsuarioId"] = user.Id;
-                Session["Tipo"] = user.Tipo;
+                string senhaCriptografada = CriptoHelper.HashSHA256(senha);
 
-                return RedirectToAction("Index", "Home");
+                var user = db.Usuarios.FirstOrDefault(u =>
+                    u.Email == email &&
+                    u.Senha == senhaCriptografada);
+
+                if (user != null)
+                {
+                    Session["UsuarioId"] = user.Id;
+                    Session["Tipo"] = user.Tipo;
+                    Session["UsuarioLogado"] = user.Nome;
+
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ViewBag.Erro = "E-mail ou senha incorretos.";
+                return View();
             }
-
-            ViewBag.Erro = "Login inválido";
-            return View();
+            catch (Exception ex)
+            {
+                ViewBag.Erro = "Erro ao realizar login: " + ex.Message;
+                return View();
+            }
         }
+
         public ActionResult TornarFuncionario(int id)
         {
-            var user = db.Usuarios.Find(id);
+            try
+            {
+                if (Session["Tipo"]?.ToString() != "Admin")
+                    return RedirectToAction("Login");
 
-            user.Tipo = "Funcionario";
-            user.Cargo = "Civel"; // 👈 GARANTE ISSO
+                var user = db.Usuarios.Find(id);
 
-            db.SaveChanges();
+                if (user == null)
+                {
+                    TempData["Erro"] = "Usuário não encontrado.";
+                    return RedirectToAction("Index");
+                }
 
-            return RedirectToAction("Index");
+                user.Tipo = "Funcionario";
+                user.Cargo = "Civel";
+
+                db.SaveChanges();
+
+                TempData["Sucesso"] = "Usuário atualizado para funcionário.";
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                TempData["Erro"] = "Erro ao alterar usuário.";
+                return RedirectToAction("Index");
+            }
         }
+
         public ActionResult Logout()
         {
-            Session.Clear(); // limpa tudo da sessão
-            return RedirectToAction("Login");
-        }
+            try
+            {
+                Session.Clear();
+                Session.Abandon();
 
+                return RedirectToAction("Login");
+            }
+            catch (Exception)
+            {
+                TempData["Erro"] = "Erro ao sair do sistema.";
+                return RedirectToAction("Login");
+            }
+        }
     }
 }
