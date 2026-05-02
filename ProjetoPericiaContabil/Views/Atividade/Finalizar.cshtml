@@ -241,7 +241,7 @@
         {
             <div class="info">
                 <strong>Arquivo do cliente:</strong>
-                <a class="arquivo-link" href="@Url.Action("DownloadArquivo", "Atividade", new { id = Model.Id, tipo = "cliente" })">
+                <a class="arquivo-link" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = Model.Id })">
                     @Model.ArquivoClienteNome
                 </a>
             </div>

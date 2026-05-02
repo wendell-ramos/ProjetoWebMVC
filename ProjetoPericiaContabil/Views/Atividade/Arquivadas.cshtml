@@ -171,6 +171,7 @@
                 <th>Resultado</th>
                 <th>Arquivos</th>
                 <th>Status</th>
+                <th>A&ccedil;&atilde;o</th>
             </tr>
 
             @foreach (var item in Model)
@@ -182,7 +183,7 @@
                     <td>
                         @if (!string.IsNullOrEmpty(item.ArquivoClienteCaminho))
                         {
-                            <a class="arquivo-link" href="@Url.Action("DownloadArquivo", "Atividade", new { id = item.Id, tipo = "cliente" })">
+                            <a class="arquivo-link" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = item.Id })">
                                 Arquivo do cliente
                             </a>
                             <br />
@@ -190,7 +191,7 @@
 
                         @if (!string.IsNullOrEmpty(item.ArquivoResultadoCaminho))
                         {
-                            <a class="arquivo-link" href="@Url.Action("DownloadArquivo", "Atividade", new { id = item.Id, tipo = "resultado" })">
+                            <a class="arquivo-link" href="@Url.Action("BaixarArquivoResultado", "Atividade", new { id = item.Id })">
                                 Arquivo do resultado
                             </a>
                         }
@@ -200,6 +201,11 @@
                         }
                     </td>
                     <td><span class="cliente-check">Visualizada pelo cliente</span></td>
+                    <td>
+                        <a class="btn-top" href="@Url.Action("Details", "Atividade", new { id = item.Id })">
+                            Detalhes
+                        </a>
+                    </td>
                 </tr>
             }
         </table>

@@ -4,12 +4,21 @@ using System.Web;
 using System.Web.Mvc;
 using ProjetoPericiaContabil.Helpers;
 using ProjetoPericiaContabil.Models;
+using ProjetoPericiaContabil.Models.ViewModels;
 
 namespace ProjetoPericiaContabil.Controllers
 {
     public class AtividadeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        private static readonly string[] TiposCalculoPermitidos =
+        {
+            "C\u00edvel",
+            "Trabalhista",
+            "Tribut\u00e1rio",
+            "Previdenci\u00e1rio"
+        };
 
         public ActionResult Index()
         {
@@ -28,6 +37,63 @@ namespace ProjetoPericiaContabil.Controllers
             }
         }
 
+        public ActionResult Details(int id)
+        {
+            try
+            {
+                if (Session["UsuarioId"] == null)
+                    return RedirectToAction("Login", "Usuario");
+
+                var atividade = db.Atividades.Find(id);
+
+                if (atividade == null)
+                {
+                    TempData["Erro"] = "Atividade n\u00e3o encontrada.";
+                    return RedirecionarListaPadrao();
+                }
+
+                if (!UsuarioPodeVisualizarAtividade(atividade))
+                {
+                    TempData["Erro"] = "Voc\u00ea n\u00e3o tem permiss\u00e3o para visualizar esta atividade.";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                var cliente = db.Usuarios.Find(atividade.ClienteId);
+                var funcionario = atividade.FuncionarioId.HasValue
+                    ? db.Usuarios.Find(atividade.FuncionarioId.Value)
+                    : null;
+
+                var model = new AtividadeDetailsViewModel
+                {
+                    Id = atividade.Id,
+                    Titulo = atividade.Titulo,
+                    Descricao = atividade.Descricao,
+                    Status = atividade.Status,
+                    TipoCalculo = atividade.TipoCalculo,
+                    Resultado = atividade.Resultado,
+                    ClienteVisualizou = atividade.ClienteVisualizou,
+                    ClienteNome = cliente != null ? cliente.Nome : "Cliente n\u00e3o encontrado",
+                    FuncionarioNome = funcionario != null ? funcionario.Nome : null,
+                    ArquivoClienteNome = atividade.ArquivoClienteNome,
+                    ArquivoClienteCaminho = atividade.ArquivoClienteCaminho,
+                    ArquivoResultadoNome = atividade.ArquivoResultadoNome,
+                    ArquivoResultadoCaminho = atividade.ArquivoResultadoCaminho,
+                    PodeBaixarArquivoCliente = !string.IsNullOrWhiteSpace(atividade.ArquivoClienteCaminho),
+                    PodeBaixarArquivoResultado = !string.IsNullOrWhiteSpace(atividade.ArquivoResultadoCaminho),
+                    PodeEditarResultado = UsuarioPodeEditarResultado(atividade),
+                    PodeFinalizar = UsuarioPodeFinalizar(atividade),
+                    PodeConfirmarLeitura = UsuarioPodeConfirmarLeitura(atividade)
+                };
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+                TempData["Erro"] = "Erro ao abrir detalhes da atividade.";
+                return RedirecionarListaPadrao();
+            }
+        }
+
         public ActionResult Create()
         {
             try
@@ -39,7 +105,7 @@ namespace ProjetoPericiaContabil.Controllers
             }
             catch (Exception)
             {
-                TempData["Erro"] = "Erro ao abrir criação de atividade.";
+                TempData["Erro"] = "Erro ao abrir cria\u00e7\u00e3o de atividade.";
                 return RedirectToAction("Index", "Home");
             }
         }
@@ -51,6 +117,14 @@ namespace ProjetoPericiaContabil.Controllers
             {
                 if (Session["Tipo"]?.ToString() != "Cliente")
                     return RedirectToAction("Login", "Usuario");
+
+                atividade.TipoCalculo = NormalizarTipoCalculo(atividade.TipoCalculo);
+
+                if (!TipoCalculoEhPermitido(atividade.TipoCalculo))
+                {
+                    ViewBag.Erro = "Tipo de c\u00e1lculo inv\u00e1lido.";
+                    return View(atividade);
+                }
 
                 var usuarioId = (int)Session["UsuarioId"];
 
@@ -100,25 +174,42 @@ namespace ProjetoPericiaContabil.Controllers
 
                 if (atividade == null)
                 {
-                    TempData["Erro"] = "Atividade não encontrada.";
+                    TempData["Erro"] = "Atividade n\u00e3o encontrada.";
                     return RedirectToAction("Disponiveis");
                 }
 
                 var funcionarioId = (int)Session["UsuarioId"];
                 var funcionario = db.Usuarios.Find(funcionarioId);
 
-                if (funcionario.Cargo != atividade.TipoCalculo)
+                if (funcionario == null)
                 {
-                    TempData["Erro"] = "Você não pode pegar essa atividade!";
+                    TempData["Erro"] = "Funcion\u00e1rio n\u00e3o encontrado.";
                     return RedirectToAction("Disponiveis");
                 }
 
+                var cargoFuncionario = NormalizarTipoCalculo(funcionario.Cargo);
+                var tipoAtividade = NormalizarTipoCalculo(atividade.TipoCalculo);
+
+                if (!TipoCalculoEhPermitido(cargoFuncionario) || !TipoCalculoEhPermitido(tipoAtividade))
+                {
+                    TempData["Erro"] = "Cargo ou tipo de c\u00e1lculo inv\u00e1lido.";
+                    return RedirectToAction("Disponiveis");
+                }
+
+                if (cargoFuncionario != tipoAtividade)
+                {
+                    TempData["Erro"] = "Voc\u00ea n\u00e3o pode pegar essa atividade!";
+                    return RedirectToAction("Disponiveis");
+                }
+
+                funcionario.Cargo = cargoFuncionario;
+                atividade.TipoCalculo = tipoAtividade;
                 atividade.FuncionarioId = funcionario.Id;
                 atividade.Status = "EmElaboracao";
 
                 db.SaveChanges();
 
-                TempData["Sucesso"] = "Atividade atribuída com sucesso!";
+                TempData["Sucesso"] = "Atividade atribu\u00edda com sucesso!";
                 return RedirectToAction("Disponiveis");
             }
             catch (Exception)
@@ -165,7 +256,7 @@ namespace ProjetoPericiaContabil.Controllers
             }
             catch (Exception)
             {
-                TempData["Erro"] = "Erro ao carregar atividades disponíveis.";
+                TempData["Erro"] = "Erro ao carregar atividades dispon\u00edveis.";
                 return RedirectToAction("Index");
             }
         }
@@ -212,7 +303,7 @@ namespace ProjetoPericiaContabil.Controllers
                 atividade.Status = "Concluida";
                 db.SaveChanges();
 
-                TempData["Sucesso"] = "Atividade concluída!";
+                TempData["Sucesso"] = "Atividade conclu\u00edda!";
                 return RedirectToAction("MinhasFuncionario");
             }
             catch (Exception)
@@ -318,60 +409,19 @@ namespace ProjetoPericiaContabil.Controllers
             }
         }
 
+        public ActionResult BaixarArquivoCliente(int id)
+        {
+            return BaixarArquivo(id, "cliente");
+        }
+
+        public ActionResult BaixarArquivoResultado(int id)
+        {
+            return BaixarArquivo(id, "resultado");
+        }
+
         public ActionResult DownloadArquivo(int id, string tipo)
         {
-            try
-            {
-                if (Session["UsuarioId"] == null)
-                    return RedirectToAction("Login", "Usuario");
-
-                var atividade = db.Atividades.Find(id);
-
-                if (atividade == null)
-                    return HttpNotFound();
-
-                var usuarioId = (int)Session["UsuarioId"];
-                var tipoUsuario = Session["Tipo"]?.ToString();
-                var podeBaixar = tipoUsuario == "Admin" ||
-                                 atividade.ClienteId == usuarioId ||
-                                 atividade.FuncionarioId == usuarioId;
-
-                if (!podeBaixar)
-                    return RedirectToAction("Index", "Home");
-
-                string nomeArquivo;
-                string caminhoArquivo;
-
-                if (tipo == "cliente")
-                {
-                    nomeArquivo = atividade.ArquivoClienteNome;
-                    caminhoArquivo = atividade.ArquivoClienteCaminho;
-                }
-                else if (tipo == "resultado")
-                {
-                    nomeArquivo = atividade.ArquivoResultadoNome;
-                    caminhoArquivo = atividade.ArquivoResultadoCaminho;
-                }
-                else
-                {
-                    return HttpNotFound();
-                }
-
-                if (string.IsNullOrWhiteSpace(nomeArquivo) || string.IsNullOrWhiteSpace(caminhoArquivo))
-                    return HttpNotFound();
-
-                var caminhoFisico = Server.MapPath(caminhoArquivo);
-
-                if (!System.IO.File.Exists(caminhoFisico))
-                    return HttpNotFound();
-
-                return File(caminhoFisico, MimeMapping.GetMimeMapping(nomeArquivo), nomeArquivo);
-            }
-            catch (Exception)
-            {
-                TempData["Erro"] = "Erro ao baixar arquivo.";
-                return RedirectToAction("Index", "Home");
-            }
+            return BaixarArquivo(id, tipo);
         }
 
         public ActionResult Arquivadas()
@@ -413,7 +463,7 @@ namespace ProjetoPericiaContabil.Controllers
             }
             catch (Exception)
             {
-                TempData["Erro"] = "Erro ao abrir edição.";
+                TempData["Erro"] = "Erro ao abrir edi\u00e7\u00e3o.";
                 return RedirectToAction("MinhasFuncionario");
             }
         }
@@ -444,6 +494,161 @@ namespace ProjetoPericiaContabil.Controllers
                 TempData["Erro"] = "Erro ao editar resultado.";
                 return View(atividade);
             }
+        }
+
+        private ActionResult BaixarArquivo(int id, string tipo)
+        {
+            try
+            {
+                if (Session["UsuarioId"] == null)
+                    return RedirectToAction("Login", "Usuario");
+
+                var atividade = db.Atividades.Find(id);
+
+                if (atividade == null)
+                    return HttpNotFound();
+
+                if (!UsuarioPodeVisualizarAtividade(atividade))
+                    return RedirectToAction("Index", "Home");
+
+                string nomeArquivo;
+                string caminhoArquivo;
+
+                if (tipo == "cliente")
+                {
+                    nomeArquivo = atividade.ArquivoClienteNome;
+                    caminhoArquivo = atividade.ArquivoClienteCaminho;
+                }
+                else if (tipo == "resultado")
+                {
+                    nomeArquivo = atividade.ArquivoResultadoNome;
+                    caminhoArquivo = atividade.ArquivoResultadoCaminho;
+                }
+                else
+                {
+                    return HttpNotFound();
+                }
+
+                if (string.IsNullOrWhiteSpace(nomeArquivo) || string.IsNullOrWhiteSpace(caminhoArquivo))
+                    return HttpNotFound();
+
+                var caminhoFisico = Server.MapPath(caminhoArquivo);
+
+                if (!System.IO.File.Exists(caminhoFisico))
+                    return HttpNotFound();
+
+                return File(caminhoFisico, MimeMapping.GetMimeMapping(nomeArquivo), nomeArquivo);
+            }
+            catch (Exception)
+            {
+                TempData["Erro"] = "Erro ao baixar arquivo.";
+                return RedirecionarListaPadrao();
+            }
+        }
+
+        private bool UsuarioPodeVisualizarAtividade(Atividade atividade)
+        {
+            if (Session["UsuarioId"] == null)
+                return false;
+
+            var usuarioId = (int)Session["UsuarioId"];
+            var tipoUsuario = Session["Tipo"]?.ToString();
+
+            if (tipoUsuario == "Admin")
+                return true;
+
+            if (tipoUsuario == "Cliente")
+                return atividade.ClienteId == usuarioId;
+
+            if (tipoUsuario == "Funcionario")
+            {
+                if (atividade.FuncionarioId == usuarioId)
+                    return true;
+
+                if (atividade.FuncionarioId.HasValue || atividade.Status != "EmAnalise")
+                    return false;
+
+                var funcionario = db.Usuarios.Find(usuarioId);
+
+                if (funcionario == null)
+                    return false;
+
+                return NormalizarTipoCalculo(funcionario.Cargo) == NormalizarTipoCalculo(atividade.TipoCalculo);
+            }
+
+            return false;
+        }
+
+        private bool UsuarioPodeEditarResultado(Atividade atividade)
+        {
+            if (Session["Tipo"]?.ToString() != "Funcionario" || Session["UsuarioId"] == null)
+                return false;
+
+            var funcionarioId = (int)Session["UsuarioId"];
+            return atividade.FuncionarioId == funcionarioId &&
+                   atividade.Status == "Concluida" &&
+                   !atividade.ClienteVisualizou;
+        }
+
+        private bool UsuarioPodeFinalizar(Atividade atividade)
+        {
+            if (Session["Tipo"]?.ToString() != "Funcionario" || Session["UsuarioId"] == null)
+                return false;
+
+            var funcionarioId = (int)Session["UsuarioId"];
+            return atividade.FuncionarioId == funcionarioId &&
+                   atividade.Status == "EmElaboracao";
+        }
+
+        private bool UsuarioPodeConfirmarLeitura(Atividade atividade)
+        {
+            if (Session["Tipo"]?.ToString() != "Cliente" || Session["UsuarioId"] == null)
+                return false;
+
+            var clienteId = (int)Session["UsuarioId"];
+            return atividade.ClienteId == clienteId &&
+                   atividade.Status == "Concluida" &&
+                   !atividade.ClienteVisualizou;
+        }
+
+        private ActionResult RedirecionarListaPadrao()
+        {
+            var tipoUsuario = Session["Tipo"]?.ToString();
+
+            if (tipoUsuario == "Admin")
+                return RedirectToAction("Index", "Usuario");
+
+            if (tipoUsuario == "Cliente")
+                return RedirectToAction("Minhas");
+
+            if (tipoUsuario == "Funcionario")
+                return RedirectToAction("Disponiveis");
+
+            return RedirectToAction("Login", "Usuario");
+        }
+
+        private static bool TipoCalculoEhPermitido(string tipoCalculo)
+        {
+            return TiposCalculoPermitidos.Contains(tipoCalculo);
+        }
+
+        private static string NormalizarTipoCalculo(string tipoCalculo)
+        {
+            if (string.IsNullOrWhiteSpace(tipoCalculo))
+                return tipoCalculo;
+
+            tipoCalculo = tipoCalculo.Trim();
+
+            if (tipoCalculo == "Civel")
+                return "C\u00edvel";
+
+            if (tipoCalculo == "Tributario")
+                return "Tribut\u00e1rio";
+
+            if (tipoCalculo == "Previdenciario")
+                return "Previdenci\u00e1rio";
+
+            return tipoCalculo;
         }
     }
 }

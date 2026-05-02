@@ -223,7 +223,7 @@
                     <td>
                         @if (!string.IsNullOrEmpty(item.ArquivoClienteCaminho))
                         {
-                            <a class="arquivo-link" href="@Url.Action("DownloadArquivo", "Atividade", new { id = item.Id, tipo = "cliente" })">
+                            <a class="arquivo-link" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = item.Id })">
                                 Arquivo do cliente
                             </a>
                         }
@@ -233,6 +233,10 @@
                         }
                     </td>
                     <td>
+                        <a class="btn" href="@Url.Action("Details", "Atividade", new { id = item.Id })">
+                            Detalhes
+                        </a>
+
                         <a class="btn" href="@Url.Action("Pegar", "Atividade", new { id = item.Id })">
                             Pegar
                         </a>

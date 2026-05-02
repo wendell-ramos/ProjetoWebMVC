@@ -1,7 +1,18 @@
-﻿@model List<ProjetoPericiaContabil.Models.Usuario>
+@model List<ProjetoPericiaContabil.Models.Usuario>
+@using ProjetoPericiaContabil.Models
+@using System.Collections.Generic
 
 @{
     Layout = null;
+    var cargosPermitidos = ViewBag.CargosPermitidos as string[] ?? new[] { "Cível", "Trabalhista", "Tributário", "Previdenciário" };
+    var atividadesPorStatus = ViewBag.AtividadesPorStatus as Dictionary<string, int> ?? new Dictionary<string, int>();
+    var atividadesPorTipo = ViewBag.AtividadesPorTipo as Dictionary<string, int> ?? new Dictionary<string, int>();
+    var rankingFuncionarios = ViewBag.RankingFuncionarios as List<Tuple<string, string, int>> ?? new List<Tuple<string, string, int>>();
+    var ultimasAtividades = ViewBag.UltimasAtividades as List<Atividade> ?? new List<Atividade>();
+    var atividadesAguardandoCliente = ViewBag.AtividadesAguardandoCliente as List<Atividade> ?? new List<Atividade>();
+    var atividadesSemFuncionario = ViewBag.AtividadesSemFuncionario as List<Atividade> ?? new List<Atividade>();
+    var maxStatus = atividadesPorStatus.Any() ? atividadesPorStatus.Values.Max() : 1;
+    var maxTipo = atividadesPorTipo.Any() ? atividadesPorTipo.Values.Max() : 1;
 }
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,6 +26,7 @@
         background: linear-gradient(135deg, #1a2332, #243044, #0f172a);
         color: #fff;
     }
+
     .btn-logout {
         padding: 8px 14px;
         background: rgba(255,255,255,0.1);
@@ -29,12 +41,12 @@
             background: rgba(255,255,255,0.2);
         }
 
-    /* Fundo glow */
     .bg-circle {
-        position: absolute;
+        position: fixed;
         border-radius: 50%;
         filter: blur(120px);
         opacity: 0.3;
+        pointer-events: none;
     }
 
     .circle1 {
@@ -74,12 +86,122 @@
             font-size: 13px;
         }
 
-    /* Card */
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 14px;
+        margin-bottom: 22px;
+    }
+
+    .summary-card {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+        .summary-card span {
+            color: #c9a84c;
+            display: block;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .summary-card strong {
+            display: block;
+            font-size: 26px;
+        }
+
+    .panel-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 18px;
+        margin-bottom: 24px;
+    }
+
+    .panel {
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        padding: 18px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+
+        .panel h3 {
+            margin: 0 0 14px;
+            font-size: 16px;
+            color: #fff;
+        }
+
+    .bar-row {
+        margin-bottom: 12px;
+    }
+
+    .bar-label {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        color: #ddd;
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .bar-track {
+        height: 9px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 99px;
+        overflow: hidden;
+    }
+
+    .bar-fill {
+        height: 100%;
+        background: linear-gradient(135deg, #c9a84c, #e0c36c);
+        border-radius: 99px;
+    }
+
+    .empty {
+        color: #888;
+        font-size: 13px;
+        font-style: italic;
+    }
+
+    .activity-list {
+        display: grid;
+        gap: 10px;
+    }
+
+    .activity-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px;
+        background: rgba(255,255,255,0.06);
+        border-radius: 6px;
+        font-size: 13px;
+    }
+
+    .activity-title {
+        color: #fff;
+        overflow-wrap: anywhere;
+    }
+
+    .activity-meta {
+        color: #c9a84c;
+        white-space: nowrap;
+        text-decoration: none;
+    }
+
+        .activity-meta:hover {
+            text-decoration: underline;
+        }
+
     .card {
         background: rgba(255,255,255,0.05);
         backdrop-filter: blur(20px);
         border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 10px;
+        border-radius: 8px;
         overflow: hidden;
         box-shadow: 0 10px 40px rgba(0,0,0,0.4);
     }
@@ -101,22 +223,54 @@
         padding: 14px;
         border-bottom: 1px solid rgba(255,255,255,0.05);
         font-size: 14px;
+        vertical-align: middle;
     }
 
     tr:hover {
         background: rgba(255,255,255,0.05);
     }
 
-    /* Botão */
+    .form-cargo {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    select {
+        height: 34px;
+        min-width: 160px;
+        padding: 0 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(255,255,255,0.2);
+        background: #ffffff;
+        color: #1a2332;
+        outline: none;
+        font-size: 12px;
+    }
+
+        select:focus {
+            border-color: #c9a84c;
+            box-shadow: 0 0 0 2px rgba(201,168,76,0.2);
+        }
+
+        select option {
+            background: #ffffff;
+            color: #1a2332;
+        }
+
     .btn {
-        padding: 6px 12px;
+        padding: 8px 12px;
         background: linear-gradient(135deg, #c9a84c, #e0c36c);
         color: #1a2332;
+        border: none;
         border-radius: 5px;
         text-decoration: none;
         font-size: 12px;
         font-weight: bold;
         transition: 0.2s;
+        cursor: pointer;
+        white-space: nowrap;
     }
 
         .btn:hover {
@@ -128,10 +282,48 @@
         padding: 4px 8px;
         border-radius: 4px;
         background: rgba(255,255,255,0.1);
+        display: inline-block;
+    }
+
+    .cargo {
+        color: #ddd;
+        font-size: 13px;
+    }
+
+    .alert {
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-size: 13px;
+    }
+
+        .alert.erro {
+            background: rgba(255, 80, 80, 0.15);
+            border: 1px solid rgba(255, 80, 80, 0.4);
+            color: #ffd6d6;
+        }
+
+        .alert.sucesso {
+            background: rgba(34,197,94,0.12);
+            border: 1px solid rgba(34,197,94,0.35);
+            color: #bbf7d0;
+        }
+
+    @@media (max-width: 760px) {
+        .container {
+            padding: 24px 14px;
+        }
+
+        .card {
+            overflow-x: auto;
+        }
+
+        table {
+            min-width: 720px;
+        }
     }
 </style>
 
-<!-- Fundo -->
 <div class="bg-circle circle1"></div>
 <div class="bg-circle circle2"></div>
 
@@ -141,9 +333,190 @@
             Sair
         </a>
     </div>
+
     <div class="header">
         <h2>Painel do Admin</h2>
-        <p>Gerencie usuários e permissões</p>
+        <p>Gerencie usu&aacute;rios, permiss&otilde;es e atividades</p>
+    </div>
+
+    @if (TempData["Erro"] != null)
+    {
+        <div class="alert erro">@TempData["Erro"]</div>
+    }
+
+    @if (TempData["Sucesso"] != null)
+    {
+        <div class="alert sucesso">@TempData["Sucesso"]</div>
+    }
+
+    <div class="dashboard-grid">
+        <div class="summary-card">
+            <span>Total de usu&aacute;rios</span>
+            <strong>@ViewBag.TotalUsuarios</strong>
+        </div>
+        <div class="summary-card">
+            <span>Clientes</span>
+            <strong>@ViewBag.TotalClientes</strong>
+        </div>
+        <div class="summary-card">
+            <span>Funcion&aacute;rios</span>
+            <strong>@ViewBag.TotalFuncionarios</strong>
+        </div>
+        <div class="summary-card">
+            <span>Total de atividades</span>
+            <strong>@ViewBag.TotalAtividades</strong>
+        </div>
+        <div class="summary-card">
+            <span>Conclu&iacute;das</span>
+            <strong>@ViewBag.TotalConcluidas</strong>
+        </div>
+        <div class="summary-card">
+            <span>Aguardando cliente</span>
+            <strong>@ViewBag.AguardandoClienteVisualizar</strong>
+        </div>
+        <div class="summary-card">
+            <span>Sem respons&aacute;vel</span>
+            <strong>@ViewBag.SemFuncionarioResponsavel</strong>
+        </div>
+        <div class="summary-card">
+            <span>Arquivos anexados</span>
+            <strong>@ViewBag.TotalArquivosAnexados</strong>
+        </div>
+    </div>
+
+    <div class="panel-grid">
+        <div class="panel">
+            <h3>Gr&aacute;fico por status</h3>
+            @if (atividadesPorStatus.Any())
+            {
+                foreach (var item in atividadesPorStatus)
+                {
+                    var largura = maxStatus == 0 ? 0 : (item.Value * 100 / maxStatus);
+                    <div class="bar-row">
+                        <div class="bar-label">
+                            <span>@item.Key</span>
+                            <strong>@item.Value</strong>
+                        </div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width:@largura%"></div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <span class="empty">Nenhuma atividade cadastrada.</span>
+            }
+        </div>
+
+        <div class="panel">
+            <h3>Gr&aacute;fico por tipo de c&aacute;lculo</h3>
+            @if (atividadesPorTipo.Any())
+            {
+                foreach (var item in atividadesPorTipo)
+                {
+                    var largura = maxTipo == 0 ? 0 : (item.Value * 100 / maxTipo);
+                    <div class="bar-row">
+                        <div class="bar-label">
+                            <span>@item.Key</span>
+                            <strong>@item.Value</strong>
+                        </div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width:@largura%"></div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <span class="empty">Nenhuma atividade cadastrada.</span>
+            }
+        </div>
+
+        <div class="panel">
+            <h3>Ranking de funcion&aacute;rios</h3>
+            <div class="activity-list">
+                @if (rankingFuncionarios.Any())
+                {
+                    foreach (var item in rankingFuncionarios)
+                    {
+                        <div class="activity-item">
+                            <span class="activity-title">@item.Item1 <span class="cargo">@item.Item2</span></span>
+                            <span class="activity-meta">@item.Item3 atividades</span>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <span class="empty">Nenhum funcion&aacute;rio com atividade.</span>
+                }
+            </div>
+        </div>
+
+        <div class="panel">
+            <h3>&Uacute;ltimas atividades criadas</h3>
+            <div class="activity-list">
+                @if (ultimasAtividades.Any())
+                {
+                    foreach (var item in ultimasAtividades)
+                    {
+                        <div class="activity-item">
+                            <span class="activity-title">@item.Titulo</span>
+                            <a class="activity-meta" href="@Url.Action("Details", "Atividade", new { id = item.Id })">Detalhes #@item.Id</a>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <span class="empty">Nenhuma atividade cadastrada.</span>
+                }
+            </div>
+        </div>
+
+        <div class="panel">
+            <h3>Atividades aguardando cliente visualizar</h3>
+            <div class="activity-list">
+                @if (atividadesAguardandoCliente.Any())
+                {
+                    foreach (var item in atividadesAguardandoCliente)
+                    {
+                        <div class="activity-item">
+                            <span class="activity-title">@item.Titulo</span>
+                            <a class="activity-meta" href="@Url.Action("Details", "Atividade", new { id = item.Id })">Detalhes #@item.Id</a>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <span class="empty">Nenhuma atividade aguardando visualiza&ccedil;&atilde;o.</span>
+                }
+            </div>
+        </div>
+
+        <div class="panel">
+            <h3>Atividades sem funcion&aacute;rio respons&aacute;vel</h3>
+            <div class="activity-list">
+                @if (atividadesSemFuncionario.Any())
+                {
+                    foreach (var item in atividadesSemFuncionario)
+                    {
+                        <div class="activity-item">
+                            <span class="activity-title">@item.Titulo</span>
+                            <a class="activity-meta" href="@Url.Action("Details", "Atividade", new { id = item.Id })">Detalhes #@item.Id</a>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <span class="empty">Nenhuma atividade sem respons&aacute;vel.</span>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="header">
+        <h2>Usu&aacute;rios</h2>
+        <p>Promova clientes para funcion&aacute;rios e defina o setor correto</p>
     </div>
 
     <div class="card">
@@ -152,7 +525,8 @@
                 <th>Nome</th>
                 <th>Email</th>
                 <th>Tipo</th>
-                <th>Ação</th>
+                <th>Cargo/Setor</th>
+                <th>A&ccedil;&atilde;o</th>
             </tr>
 
             @foreach (var item in Model)
@@ -166,16 +540,40 @@
                     </td>
 
                     <td>
+                        @if (!string.IsNullOrEmpty(item.Cargo))
+                        {
+                            <span class="cargo">@item.Cargo</span>
+                        }
+                        else
+                        {
+                            <span class="cargo">Sem cargo</span>
+                        }
+                    </td>
+
+                    <td>
                         @if (item.Tipo == "Cliente")
                         {
-                            <a class="btn" href="@Url.Action("TornarFuncionario", "Usuario", new { id = item.Id })">
-                                Tornar Funcionário
-                            </a>
+                            using (Html.BeginForm("TornarFuncionario", "Usuario", new { id = item.Id }, FormMethod.Post, new { @class = "form-cargo" }))
+                            {
+                                <select name="cargo" required>
+                                    @foreach (var cargo in cargosPermitidos)
+                                    {
+                                        <option value="@cargo">@cargo</option>
+                                    }
+                                </select>
+
+                                <button type="submit" class="btn">
+                                    Tornar Funcion&aacute;rio
+                                </button>
+                            }
+                        }
+                        else
+                        {
+                            <span class="cargo">Nenhuma a&ccedil;&atilde;o dispon&iacute;vel</span>
                         }
                     </td>
                 </tr>
             }
         </table>
     </div>
-
 </div>

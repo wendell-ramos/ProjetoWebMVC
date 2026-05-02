@@ -11,10 +11,11 @@
     body {
         margin: 0;
         font-family: 'DM Sans', sans-serif;
-        height: 100vh;
+        min-height: 100vh;
         background: linear-gradient(135deg, #1a2332, #243044, #0f172a);
         color: #fff;
     }
+
     .btn-logout {
         padding: 8px 14px;
         background: rgba(255,255,255,0.1);
@@ -25,9 +26,10 @@
         transition: 0.2s;
     }
 
-    .btn-logout:hover {
+        .btn-logout:hover {
             background: rgba(255,255,255,0.2);
-    }
+        }
+
     .bg-circle {
         position: absolute;
         border-radius: 50%;
@@ -52,13 +54,14 @@
     }
 
     .container {
-        height: 100vh;
+        min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
         position: relative;
         z-index: 1;
         padding: 20px;
+        box-sizing: border-box;
     }
 
     .card {
@@ -94,6 +97,8 @@
     label {
         font-size: 13px;
         color: #ccc;
+        display: block;
+        margin-bottom: 6px;
     }
 
     input, select {
@@ -107,6 +112,7 @@
         color: #fff;
         outline: none;
         transition: 0.2s;
+        box-sizing: border-box;
     }
 
         input::placeholder {
@@ -123,6 +129,17 @@
             background: rgba(255,255,255,0.15);
         }
 
+    select {
+        color: #fff;
+        background-color: rgba(255,255,255,0.1);
+        cursor: pointer;
+    }
+
+        select option {
+            background: #ffffff;
+            color: #1a2332;
+        }
+
     textarea {
         width: 100%;
         min-height: 100px;
@@ -134,7 +151,12 @@
         outline: none;
         margin-bottom: 15px;
         resize: none;
+        box-sizing: border-box;
     }
+
+        textarea::placeholder {
+            color: #ccc;
+        }
 
         textarea:focus {
             border-color: #c9a84c;
@@ -145,6 +167,7 @@
         display: flex;
         justify-content: space-between;
         margin-top: 10px;
+        gap: 12px;
     }
 
     .btn {
@@ -189,7 +212,6 @@
     }
 </style>
 
-<!-- Fundo -->
 <div class="bg-circle circle1"></div>
 <div class="bg-circle circle2"></div>
 
@@ -199,6 +221,7 @@
             Sair
         </a>
     </div>
+
     <div class="card">
 
         <h2>Criar Atividade</h2>
@@ -212,17 +235,18 @@
 
         <form method="post" enctype="multipart/form-data">
 
-            <label>Título</label>
-            <input type="text" name="Titulo" placeholder="Digite o título da atividade" required />
+            <label>T&iacute;tulo</label>
+            <input type="text" name="Titulo" value="@(Model != null ? Model.Titulo : "")" placeholder="Digite o t&iacute;tulo da atividade" required />
 
-            <label>Descrição</label>
-            <textarea name="Descricao" placeholder="Descreva o que precisa ser feito..." required></textarea>
+            <label>Descri&ccedil;&atilde;o</label>
+            <textarea name="Descricao" placeholder="Descreva o que precisa ser feito..." required>@(Model != null ? Model.Descricao : "")</textarea>
 
-            <label>Tipo de Cálculo</label>
-            <select name="TipoCalculo">
-                <option value="Civel">Cível</option>
-                <option value="Trabalhista">Trabalhista</option>
-                <option value="Tributario">Tributário</option>
+            <label>Tipo de C&aacute;lculo</label>
+            <select name="TipoCalculo" required>
+                <option value="Cível" selected="@(Model != null && Model.TipoCalculo == "Cível")">C&iacute;vel</option>
+                <option value="Trabalhista" selected="@(Model != null && Model.TipoCalculo == "Trabalhista")">Trabalhista</option>
+                <option value="Tributário" selected="@(Model != null && Model.TipoCalculo == "Tributário")">Tribut&aacute;rio</option>
+                <option value="Previdenciário" selected="@(Model != null && Model.TipoCalculo == "Previdenciário")">Previdenci&aacute;rio</option>
             </select>
 
             <label>Arquivo do Cliente</label>
