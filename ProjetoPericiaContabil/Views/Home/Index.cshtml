@@ -1,33 +1,47 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+@{
+    ViewBag.Title = "In&iacute;cio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
-
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
+<section class="hero-panel">
+    <div>
+        <span class="status-badge status-analise mb-3">Sistema de gest&atilde;o pericial</span>
+        <h1 class="hero-title">Per&iacute;cia Cont&aacute;bil com controle, rastreabilidade e organiza&ccedil;&atilde;o.</h1>
+        <p class="hero-copy">
+            Ambiente profissional para cria&ccedil;&atilde;o de atividades, acompanhamento por setor,
+            entrega de resultados, arquivos anexados e hist&oacute;rico administrativo.
+        </p>
+        <div class="actions mt-4">
+            <a class="btn btn-primary" href="@Url.Action("Login", "Usuario")">
+                <i class="bi bi-box-arrow-in-right"></i> Entrar no sistema
+            </a>
+        </div>
     </div>
-</main>
+
+    <div class="surface">
+        <h2>Fluxo operacional</h2>
+        <div class="feature-list">
+            <div class="feature-item">
+                <i class="bi bi-file-earmark-plus"></i>
+                <div>
+                    <strong>Cliente cria atividade</strong>
+                    <div class="text-muted-app">Solicita an&aacute;lise e anexa documentos iniciais.</div>
+                </div>
+            </div>
+            <div class="feature-item">
+                <i class="bi bi-briefcase"></i>
+                <div>
+                    <strong>Funcion&aacute;rio assume pelo setor</strong>
+                    <div class="text-muted-app">Atividades seguem o tipo de c&aacute;lculo definido.</div>
+                </div>
+            </div>
+            <div class="feature-item">
+                <i class="bi bi-check2-circle"></i>
+                <div>
+                    <strong>Resultado e hist&oacute;rico</strong>
+                    <div class="text-muted-app">Entrega final, arquivos e logs ficam centralizados.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

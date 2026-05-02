@@ -1,37 +1,83 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Meu Aplicativo ASP.NET</title>
+    <title>@ViewBag.Title - Projeto Per&iacute;cia Cont&aacute;bil</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-        <div class="container">
-            @Html.ActionLink("Nome do aplicativo", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Alternar a navegação" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Página Inicial", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Sobre", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contato", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                </ul>
+    @{
+        var usuarioLogado = Session["UsuarioLogado"] != null ? Session["UsuarioLogado"].ToString() : "";
+        var tipoUsuario = Session["Tipo"] != null ? Session["Tipo"].ToString() : "";
+        var estaLogado = Session["UsuarioId"] != null;
+    }
+
+    <div class="app-background"></div>
+
+    @if (estaLogado)
+    {
+        <nav class="navbar navbar-expand-lg app-navbar">
+            <div class="container-fluid app-shell">
+                <a class="navbar-brand brand-lockup" href="@Url.Action("Index", "Home")">
+                    <span class="brand-mark"><i class="bi bi-bank2"></i></span>
+                    <span>
+                        <strong>Per&iacute;cia Cont&aacute;bil</strong>
+                        <small>Gest&atilde;o pericial</small>
+                    </span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Alternar navega&ccedil;&atilde;o">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav app-nav-links me-auto">
+                        @if (tipoUsuario == "Admin")
+                        {
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Usuario")"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Usuario")"><i class="bi bi-people"></i> Usu&aacute;rios</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Historico", "Admin")"><i class="bi bi-clock-history"></i> Hist&oacute;rico</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Atividade")"><i class="bi bi-folder2-open"></i> Atividades</a></li>
+                        }
+                        else if (tipoUsuario == "Funcionario")
+                        {
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Disponiveis", "Atividade")"><i class="bi bi-inbox"></i> Dispon&iacute;veis</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("MinhasFuncionario", "Atividade")"><i class="bi bi-briefcase"></i> Minhas Atividades</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Arquivadas", "Atividade")"><i class="bi bi-archive"></i> Arquivadas</a></li>
+                        }
+                        else if (tipoUsuario == "Cliente")
+                        {
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Minhas", "Atividade")"><i class="bi bi-list-check"></i> Minhas Atividades</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Create", "Atividade")"><i class="bi bi-plus-circle"></i> Nova Atividade</a></li>
+                        }
+                    </ul>
+
+                    <div class="user-chip">
+                        <span class="user-avatar"><i class="bi bi-person"></i></span>
+                        <span class="user-meta">
+                            <strong>@usuarioLogado</strong>
+                            <small>@tipoUsuario</small>
+                        </span>
+                        <a class="btn btn-outline-light btn-sm" href="@Url.Action("Logout", "Usuario")">
+                            <i class="bi bi-box-arrow-right"></i> Sair
+                        </a>
+                    </div>
+                </div>
             </div>
+        </nav>
+    }
+
+    <main class="app-main @(estaLogado ? "" : "auth-main")">
+        <div class="app-shell">
+            @RenderBody()
         </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Meu Aplicativo ASP.NET</p>
-        </footer>
-    </div>
+    </main>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

@@ -1,9 +1,18 @@
-﻿@{
-    ViewBag.Title = "About";
+@{
+    ViewBag.Title = "Sobre";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
-    <h3>@ViewBag.Message</h3>
 
-    <p>Use this area to provide additional information.</p>
-</main>
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Sobre o Sistema</h1>
+        <p class="page-subtitle">Projeto de gest&atilde;o para atividades de per&iacute;cia cont&aacute;bil, com perfis de cliente, funcion&aacute;rio e administrador.</p>
+    </div>
+</div>
+
+<section class="surface">
+    <p class="text-block">
+        O sistema organiza solicita&ccedil;&otilde;es periciais, distribui atividades por setor,
+        controla arquivos enviados e registra eventos importantes para auditoria administrativa.
+    </p>
+</section>

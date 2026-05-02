@@ -1,19 +1,30 @@
-﻿@{
-    ViewBag.Title = "Contact";
+@{
+    ViewBag.Title = "Contato";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
-    <h3>@ViewBag.Message</h3>
 
-    <address>
-        One Microsoft Way<br />
-        Redmond, WA 98052-6399<br />
-        <abbr title="Phone">P:</abbr>
-        425.555.0100
-    </address>
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Contato</h1>
+        <p class="page-subtitle">Canal institucional para suporte e acompanhamento do ambiente de per&iacute;cia cont&aacute;bil.</p>
+    </div>
+</div>
 
-    <address>
-        <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-        <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-    </address>
-</main>
+<section class="surface">
+    <div class="feature-list">
+        <div class="feature-item">
+            <i class="bi bi-envelope"></i>
+            <div>
+                <strong>Suporte</strong>
+                <div class="text-muted-app">suporte@periciacontabil.local</div>
+            </div>
+        </div>
+        <div class="feature-item">
+            <i class="bi bi-building"></i>
+            <div>
+                <strong>Departamento administrativo</strong>
+                <div class="text-muted-app">Gest&atilde;o de usu&aacute;rios, setores e atividades.</div>
+            </div>
+        </div>
+    </div>
+</section>

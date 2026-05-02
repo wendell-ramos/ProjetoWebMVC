@@ -1,249 +1,71 @@
-﻿@model List<ProjetoPericiaContabil.Models.Atividade>
+@model List<ProjetoPericiaContabil.Models.Atividade>
 
 @{
-    Layout = null;
+    ViewBag.Title = "Atividades Dispon&iacute;veis";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
-<style>
-    body {
-        margin: 0;
-        font-family: 'DM Sans', sans-serif;
-        min-height: 100vh;
-        background: linear-gradient(135deg, #1a2332, #243044, #0f172a);
-        color: #fff;
-    }
-
-    .btn-logout {
-        padding: 8px 14px;
-        background: rgba(255,255,255,0.1);
-        color: #fff;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 13px;
-        transition: 0.2s;
-        white-space: nowrap;
-    }
-
-        .btn-logout:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-    .bg-circle {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(120px);
-        opacity: 0.3;
-    }
-
-    .circle1 {
-        width: 300px;
-        height: 300px;
-        background: #c9a84c;
-        top: 10%;
-        left: 10%;
-    }
-
-    .circle2 {
-        width: 400px;
-        height: 400px;
-        background: #3b82f6;
-        bottom: 10%;
-        right: 10%;
-    }
-
-    .container {
-        padding: 40px;
-        position: relative;
-        z-index: 1;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-        gap: 20px;
-        flex-wrap: wrap;
-    }
-
-        .header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            margin: 0;
-        }
-
-    .header-buttons {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        justify-content: flex-end;
-        flex-wrap: wrap;
-    }
-
-    .btn-top {
-        padding: 8px 14px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 6px;
-        color: #fff;
-        text-decoration: none;
-        font-size: 13px;
-        transition: 0.2s;
-        white-space: nowrap;
-    }
-
-        .btn-top:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-    .card {
-        background: rgba(255,255,255,0.05);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    th {
-        padding: 14px;
-        text-align: left;
-        font-size: 13px;
-        color: #c9a84c;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    td {
-        padding: 14px;
-        font-size: 14px;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
-        vertical-align: top;
-    }
-
-    tr:hover {
-        background: rgba(255,255,255,0.05);
-    }
-
-    .btn {
-        padding: 6px 12px;
-        background: linear-gradient(135deg, #c9a84c, #e0c36c);
-        color: #1a2332;
-        border-radius: 5px;
-        text-decoration: none;
-        font-size: 12px;
-        font-weight: bold;
-        transition: 0.2s;
-        display: inline-block;
-        white-space: nowrap;
-    }
-
-        .btn:hover {
-            box-shadow: 0 5px 15px rgba(201,168,76,0.4);
-        }
-
-    .alert {
-        background: rgba(255, 0, 0, 0.1);
-        border: 1px solid rgba(255,0,0,0.3);
-        padding: 10px;
-        border-radius: 6px;
-        margin-bottom: 20px;
-        color: #ff6b6b;
-        font-size: 13px;
-    }
-
-    .arquivo-link {
-        display: inline-block;
-        color: #c9a84c;
-        font-size: 12px;
-        font-weight: bold;
-        text-decoration: none;
-    }
-
-        .arquivo-link:hover {
-            text-decoration: underline;
-        }
-
-    .arquivo-vazio {
-        color: #888;
-        font-size: 12px;
-        font-style: italic;
-    }
-</style>
-
-<!-- Fundo -->
-<div class="bg-circle circle1"></div>
-<div class="bg-circle circle2"></div>
-
-<div class="container">
-
-    @if (TempData["Erro"] != null)
-    {
-        <div class="alert">@TempData["Erro"]</div>
-    }
-
-    <div class="header">
-        <h2>Atividades Disponíveis</h2>
-
-        <div class="header-buttons">
-            <a class="btn-top" href="@Url.Action("MinhasFuncionario", "Atividade")">
-                Minhas Atividades
-            </a>
-
-            <a class="btn-logout" href="@Url.Action("Logout", "Usuario")">
-                Sair
-            </a>
-        </div>
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Atividades Dispon&iacute;veis</h1>
+        <p class="page-subtitle">Solicita&ccedil;&otilde;es em an&aacute;lise compat&iacute;veis com o setor do funcion&aacute;rio.</p>
     </div>
+    <div class="page-actions">
+        <a class="btn btn-secondary" href="@Url.Action("MinhasFuncionario", "Atividade")">
+            <i class="bi bi-briefcase"></i> Minhas Atividades
+        </a>
+    </div>
+</div>
 
-    <div class="card">
-        <table>
-            <tr>
-                <th>Título</th>
-                <th>Descrição</th>
-                <th>Tipo</th>
-                <th>Arquivo</th>
-                <th>Ação</th>
-            </tr>
+@if (TempData["Erro"] != null)
+{
+    <div class="alert alert-danger">@TempData["Erro"]</div>
+}
 
-            @foreach (var item in Model)
-            {
+<section class="card table-card">
+    <div class="table-responsive">
+        <table class="table app-table">
+            <thead>
                 <tr>
-                    <td>@item.Titulo</td>
-                    <td>@item.Descricao</td>
-                    <td>@item.TipoCalculo</td>
-                    <td>
-                        @if (!string.IsNullOrEmpty(item.ArquivoClienteCaminho))
-                        {
-                            <a class="arquivo-link" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = item.Id })">
-                                Arquivo do cliente
-                            </a>
-                        }
-                        else
-                        {
-                            <span class="arquivo-vazio">Sem arquivo</span>
-                        }
-                    </td>
-                    <td>
-                        <a class="btn" href="@Url.Action("Details", "Atividade", new { id = item.Id })">
-                            Detalhes
-                        </a>
-
-                        <a class="btn" href="@Url.Action("Pegar", "Atividade", new { id = item.Id })">
-                            Pegar
-                        </a>
-                    </td>
+                    <th>T&iacute;tulo</th>
+                    <th>Descri&ccedil;&atilde;o</th>
+                    <th>Tipo</th>
+                    <th>Arquivo</th>
+                    <th>A&ccedil;&atilde;o</th>
                 </tr>
-            }
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><strong>@item.Titulo</strong></td>
+                        <td><div class="descricao">@item.Descricao</div></td>
+                        <td><span class="status-badge status-default">@item.TipoCalculo</span></td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ArquivoClienteCaminho))
+                            {
+                                <a class="arquivo-link" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = item.Id })">
+                                    <i class="bi bi-download"></i> Arquivo do cliente
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="arquivo-vazio">Sem arquivo</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="table-actions">
+                                <a class="btn btn-secondary btn-sm" href="@Url.Action("Details", "Atividade", new { id = item.Id })">
+                                    <i class="bi bi-eye"></i> Detalhes
+                                </a>
+                                <a class="btn btn-primary btn-sm" href="@Url.Action("Pegar", "Atividade", new { id = item.Id })">
+                                    <i class="bi bi-person-check"></i> Pegar
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
         </table>
     </div>
-
-</div>
+</section>

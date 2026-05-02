@@ -1,178 +1,46 @@
-﻿@model ProjetoPericiaContabil.Models.Atividade
+@model ProjetoPericiaContabil.Models.Atividade
 
 @{
-    Layout = null;
+    ViewBag.Title = "Editar Resultado";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
-<style>
-    body {
-        margin: 0;
-        font-family: 'DM Sans', sans-serif;
-        height: 100vh;
-        background: linear-gradient(135deg, #1a2332, #243044, #0f172a);
-        color: #fff;
-    }
-
-    .bg-circle {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(120px);
-        opacity: 0.3;
-    }
-
-    .circle1 {
-        width: 300px;
-        height: 300px;
-        background: #c9a84c;
-        top: 10%;
-        left: 10%;
-    }
-
-    .circle2 {
-        width: 400px;
-        height: 400px;
-        background: #3b82f6;
-        bottom: 10%;
-        right: 10%;
-    }
-
-    .container {
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        z-index: 1;
-        padding: 20px;
-    }
-
-    .card {
-        width: 100%;
-        max-width: 550px;
-        background: rgba(255,255,255,0.05);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 10px;
-        padding: 30px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    }
-
-        .card h2 {
-            font-family: 'Playfair Display', serif;
-            margin-bottom: 20px;
-            font-size: 26px;
-        }
-
-    .info {
-        font-size: 13px;
-        color: #ccc;
-        margin-bottom: 10px;
-        line-height: 1.6;
-    }
-
-    .descricao-box {
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.12);
-        border-radius: 8px;
-        padding: 12px;
-        margin-bottom: 20px;
-        color: #eee;
-        font-size: 14px;
-        line-height: 1.6;
-        white-space: pre-line;
-    }
-
-    textarea {
-        width: 100%;
-        min-height: 140px;
-        border-radius: 6px;
-        border: 1px solid rgba(255,255,255,0.2);
-        background: rgba(255,255,255,0.1);
-        color: #fff;
-        padding: 10px;
-        resize: none;
-        outline: none;
-        transition: 0.2s;
-    }
-
-        textarea:focus {
-            border-color: #c9a84c;
-            background: rgba(255,255,255,0.15);
-        }
-
-    .actions {
-        margin-top: 20px;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .btn {
-        padding: 10px 16px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 13px;
-        font-weight: bold;
-        transition: 0.2s;
-    }
-
-    .btn-back {
-        background: rgba(255,255,255,0.1);
-        color: #fff;
-    }
-
-        .btn-back:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-    .btn-save {
-        background: linear-gradient(135deg, #c9a84c, #e0c36c);
-        color: #1a2332;
-        border: none;
-        cursor: pointer;
-    }
-
-        .btn-save:hover {
-            box-shadow: 0 5px 20px rgba(201,168,76,0.4);
-            transform: translateY(-1px);
-        }
-</style>
-
-<div class="bg-circle circle1"></div>
-<div class="bg-circle circle2"></div>
-
-<div class="container">
-    <div class="card">
-        <h2>Editar Resultado</h2>
-
-        <div class="info">
-            <strong>Atividade:</strong> @Model.Titulo
-        </div>
-
-        <div class="info">
-            <strong>Solicitação do cliente:</strong>
-        </div>
-
-        <div class="descricao-box">
-            @Model.Descricao
-        </div>
-
-        <form method="post">
-            <input type="hidden" name="Id" value="@Model.Id" />
-
-            <textarea name="Resultado" required>@Model.Resultado</textarea>
-
-            <div class="actions">
-                <a class="btn btn-back" href="@Url.Action("MinhasFuncionario", "Atividade")">
-                    Voltar
-                </a>
-
-                <button type="submit" class="btn btn-save">
-                    Salvar Alterações
-                </button>
-            </div>
-        </form>
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Editar Resultado</h1>
+        <p class="page-subtitle">Atualize o texto do resultado antes da confirma&ccedil;&atilde;o de leitura pelo cliente.</p>
+    </div>
+    <div class="page-actions">
+        <a class="btn btn-secondary" href="@Url.Action("MinhasFuncionario", "Atividade")">
+            <i class="bi bi-arrow-left"></i> Voltar
+        </a>
     </div>
 </div>
+
+<section class="form-card">
+    <div class="info-box p-3 mb-3">
+        <span class="text-muted-app d-block">Atividade</span>
+        <strong>@Model.Titulo</strong>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Solicita&ccedil;&atilde;o do cliente</label>
+        <div class="descricao-box p-3">@Model.Descricao</div>
+    </div>
+
+    <form method="post" class="d-grid gap-3">
+        <input type="hidden" name="Id" value="@Model.Id" />
+
+        <div>
+            <label class="form-label">Resultado</label>
+            <textarea class="form-control" name="Resultado" required>@Model.Resultado</textarea>
+        </div>
+
+        <div class="actions justify-content-between">
+            <a class="btn btn-secondary" href="@Url.Action("MinhasFuncionario", "Atividade")">Cancelar</a>
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-save"></i> Salvar Altera&ccedil;&otilde;es
+            </button>
+        </div>
+    </form>
+</section>

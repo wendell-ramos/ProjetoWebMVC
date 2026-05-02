@@ -1,293 +1,87 @@
-﻿@model List<ProjetoPericiaContabil.Models.Atividade>
+@model List<ProjetoPericiaContabil.Models.Atividade>
 
 @{
-    Layout = null;
+    ViewBag.Title = "Minhas Atividades";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
-<style>
-    body {
-        margin: 0;
-        font-family: 'DM Sans', sans-serif;
-        min-height: 100vh;
-        background: linear-gradient(135deg, #1a2332, #243044, #0f172a);
-        color: #fff;
-    }
-
-    .bg-circle {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(120px);
-        opacity: 0.3;
-    }
-
-    .circle1 {
-        width: 300px;
-        height: 300px;
-        background: #c9a84c;
-        top: 10%;
-        left: 10%;
-    }
-
-    .circle2 {
-        width: 400px;
-        height: 400px;
-        background: #3b82f6;
-        bottom: 10%;
-        right: 10%;
-    }
-
-    .container {
-        padding: 40px;
-        position: relative;
-        z-index: 1;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-        gap: 20px;
-    }
-
-        .header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            margin: 0;
-        }
-
-    .header-buttons {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        justify-content: flex-end;
-    }
-
-    .btn-top {
-        padding: 8px 14px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 6px;
-        color: #fff;
-        text-decoration: none;
-        font-size: 13px;
-        transition: 0.2s;
-        white-space: nowrap;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-        .btn-top:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-    .btn-logout {
-        padding: 8px 14px;
-        background: rgba(255,255,255,0.1);
-        color: #fff;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 13px;
-        transition: 0.2s;
-        white-space: nowrap;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-        .btn-logout:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-    .card {
-        background: rgba(255,255,255,0.05);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    th {
-        padding: 14px;
-        text-align: left;
-        font-size: 13px;
-        color: #c9a84c;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    td {
-        padding: 14px;
-        font-size: 14px;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
-        vertical-align: top;
-    }
-
-    tr:hover {
-        background: rgba(255,255,255,0.05);
-    }
-
-    .badge {
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 12px;
-        background: rgba(255,255,255,0.1);
-    }
-
-        .badge.elab {
-            color: #facc15;
-        }
-
-        .badge.done {
-            color: #22c55e;
-        }
-
-    .descricao {
-        color: #ddd;
-        font-size: 13px;
-        line-height: 1.5;
-    }
-
-    .btn {
-        padding: 6px 12px;
-        background: linear-gradient(135deg, #c9a84c, #e0c36c);
-        color: #1a2332;
-        border-radius: 5px;
-        text-decoration: none;
-        font-size: 12px;
-        font-weight: bold;
-        transition: 0.2s;
-        display: inline-block;
-        white-space: nowrap;
-    }
-
-        .btn:hover {
-            box-shadow: 0 5px 15px rgba(201,168,76,0.4);
-        }
-
-    .arquivo-link {
-        display: inline-block;
-        color: #c9a84c;
-        font-size: 12px;
-        font-weight: bold;
-        text-decoration: none;
-        margin-bottom: 6px;
-    }
-
-        .arquivo-link:hover {
-            text-decoration: underline;
-        }
-
-    .arquivo-vazio {
-        color: #888;
-        font-size: 12px;
-        font-style: italic;
-    }
-</style>
-
-<div class="bg-circle circle1"></div>
-<div class="bg-circle circle2"></div>
-
-<div class="container">
-    <div class="header">
-        <h2>Minhas Atividades</h2>
-
-        <div class="header-buttons">
-            <a class="btn-top" href="@Url.Action("Disponiveis", "Atividade")">
-                Ver Disponíveis
-            </a>
-
-            <a class="btn-top" href="@Url.Action("Arquivadas", "Atividade")">
-                Arquivadas
-            </a>
-
-            <a class="btn-logout" href="@Url.Action("Logout", "Usuario")">
-                Sair
-            </a>
-        </div>
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Minhas Atividades</h1>
+        <p class="page-subtitle">Atividades atribu&iacute;das ao funcion&aacute;rio, com acesso a arquivos, finaliza&ccedil;&atilde;o e edi&ccedil;&atilde;o de resultados.</p>
     </div>
-
-    <div class="card">
-        <table>
-            <tr>
-                <th>Título</th>
-                <th>Descrição</th>
-                <th>Arquivos</th>
-                <th>Status</th>
-                <th>Ação</th>
-            </tr>
-
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Titulo</td>
-                    <td><div class="descricao">@item.Descricao</div></td>
-                    <td>
-                        @if (!string.IsNullOrEmpty(item.ArquivoClienteCaminho))
-                        {
-                            <a class="arquivo-link" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = item.Id })">
-                                Arquivo do cliente
-                            </a>
-                            <br />
-                        }
-
-                        @if (!string.IsNullOrEmpty(item.ArquivoResultadoCaminho))
-                        {
-                            <a class="arquivo-link" href="@Url.Action("BaixarArquivoResultado", "Atividade", new { id = item.Id })">
-                                Arquivo do resultado
-                            </a>
-                        }
-                        else if (string.IsNullOrEmpty(item.ArquivoClienteCaminho))
-                        {
-                            <span class="arquivo-vazio">Sem arquivos</span>
-                        }
-                    </td>
-
-                    <td>
-                        <a class="btn" href="@Url.Action("Details", "Atividade", new { id = item.Id })">
-                            Detalhes
-                        </a>
-
-                        @if (item.Status == "EmElaboracao")
-                        {
-                            <span class="badge elab">Em elaboração</span>
-                        }
-                        else if (item.Status == "Concluida")
-                        {
-                            <span class="badge done">Concluída</span>
-                        }
-                        else
-                        {
-                            <span class="badge">@item.Status</span>
-                        }
-                    </td>
-
-                    <td>
-                        @if (item.Status == "EmElaboracao")
-                        {
-                            <a class="btn" href="@Url.Action("Finalizar", "Atividade", new { id = item.Id })">
-                                Finalizar
-                            </a>
-                        }
-                        else if (item.Status == "Concluida" && item.ClienteVisualizou == false)
-                        {
-                            <a class="btn" href="@Url.Action("EditarResultado", "Atividade", new { id = item.Id })">
-                                Editar Resultado
-                            </a>
-                        }
-                    </td>
-                </tr>
-            }
-        </table>
+    <div class="page-actions">
+        <a class="btn btn-secondary" href="@Url.Action("Disponiveis", "Atividade")">
+            <i class="bi bi-inbox"></i> Dispon&iacute;veis
+        </a>
+        <a class="btn btn-secondary" href="@Url.Action("Arquivadas", "Atividade")">
+            <i class="bi bi-archive"></i> Arquivadas
+        </a>
     </div>
 </div>
+
+<section class="card table-card">
+    <div class="table-responsive">
+        <table class="table app-table">
+            <thead>
+                <tr>
+                    <th>T&iacute;tulo</th>
+                    <th>Descri&ccedil;&atilde;o</th>
+                    <th>Arquivos</th>
+                    <th>Status</th>
+                    <th>A&ccedil;&atilde;o</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var statusClass = item.Status == "EmElaboracao" ? "status-elaboracao" : item.Status == "Concluida" ? "status-concluida" : "status-default";
+                    var statusText = item.Status == "EmElaboracao" ? "Em elabora&ccedil;&atilde;o" : item.Status == "Concluida" ? "Conclu&iacute;da" : item.Status;
+
+                    <tr>
+                        <td><strong>@item.Titulo</strong></td>
+                        <td><div class="descricao">@item.Descricao</div></td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ArquivoClienteCaminho))
+                            {
+                                <a class="arquivo-link d-block" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = item.Id })">
+                                    <i class="bi bi-paperclip"></i> Arquivo do cliente
+                                </a>
+                            }
+                            @if (!string.IsNullOrEmpty(item.ArquivoResultadoCaminho))
+                            {
+                                <a class="arquivo-link d-block" href="@Url.Action("BaixarArquivoResultado", "Atividade", new { id = item.Id })">
+                                    <i class="bi bi-file-earmark-check"></i> Arquivo do resultado
+                                </a>
+                            }
+                            else if (string.IsNullOrEmpty(item.ArquivoClienteCaminho))
+                            {
+                                <span class="arquivo-vazio">Sem arquivos</span>
+                            }
+                        </td>
+                        <td><span class="status-badge @statusClass">@Html.Raw(statusText)</span></td>
+                        <td>
+                            <div class="table-actions">
+                                <a class="btn btn-secondary btn-sm" href="@Url.Action("Details", "Atividade", new { id = item.Id })">
+                                    <i class="bi bi-eye"></i> Detalhes
+                                </a>
+                                @if (item.Status == "EmElaboracao")
+                                {
+                                    <a class="btn btn-primary btn-sm" href="@Url.Action("Finalizar", "Atividade", new { id = item.Id })">
+                                        <i class="bi bi-check2-circle"></i> Finalizar
+                                    </a>
+                                }
+                                else if (item.Status == "Concluida" && item.ClienteVisualizou == false)
+                                {
+                                    <a class="btn btn-primary btn-sm" href="@Url.Action("EditarResultado", "Atividade", new { id = item.Id })">
+                                        <i class="bi bi-pencil-square"></i> Editar Resultado
+                                    </a>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
