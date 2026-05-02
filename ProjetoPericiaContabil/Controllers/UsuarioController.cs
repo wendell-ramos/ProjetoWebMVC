@@ -84,6 +84,15 @@ namespace ProjetoPericiaContabil.Controllers
                 db.Usuarios.Add(usuario);
                 db.SaveChanges();
 
+                HistoricoHelper.Registrar(
+                    db,
+                    null,
+                    usuario.Id,
+                    usuario.Nome,
+                    usuario.Tipo,
+                    "Novo usu\u00e1rio cadastrado",
+                    "Um novo cliente se cadastrou no sistema.");
+
                 TempData["Sucesso"] = "Cadastro realizado com sucesso!";
                 return RedirectToAction("Login");
             }
@@ -174,6 +183,15 @@ namespace ProjetoPericiaContabil.Controllers
                 user.Cargo = cargo;
 
                 db.SaveChanges();
+
+                HistoricoHelper.Registrar(
+                    db,
+                    null,
+                    Session["UsuarioId"] != null ? (int)Session["UsuarioId"] : (int?)null,
+                    Session["UsuarioLogado"] != null ? Session["UsuarioLogado"].ToString() : "Admin",
+                    Session["Tipo"] != null ? Session["Tipo"].ToString() : "Admin",
+                    "Admin alterou cargo de usu\u00e1rio",
+                    "Admin transformou " + user.Nome + " em funcion\u00e1rio do setor " + cargo + ".");
 
                 TempData["Sucesso"] = "Usu\u00e1rio atualizado para funcion\u00e1rio.";
                 return RedirectToAction("Index");

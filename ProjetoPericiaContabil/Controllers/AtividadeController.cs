@@ -82,7 +82,11 @@ namespace ProjetoPericiaContabil.Controllers
                     PodeBaixarArquivoResultado = !string.IsNullOrWhiteSpace(atividade.ArquivoResultadoCaminho),
                     PodeEditarResultado = UsuarioPodeEditarResultado(atividade),
                     PodeFinalizar = UsuarioPodeFinalizar(atividade),
-                    PodeConfirmarLeitura = UsuarioPodeConfirmarLeitura(atividade)
+                    PodeConfirmarLeitura = UsuarioPodeConfirmarLeitura(atividade),
+                    Historicos = db.HistoricosAtividade
+                        .Where(h => h.AtividadeId == atividade.Id)
+                        .OrderByDescending(h => h.DataHora)
+                        .ToList()
                 };
 
                 return View(model);
@@ -153,6 +157,11 @@ namespace ProjetoPericiaContabil.Controllers
                 db.Atividades.Add(atividade);
                 db.SaveChanges();
 
+                RegistrarHistorico(atividade.Id, "Cliente criou a atividade", "Cliente criou uma nova atividade.");
+
+                if (!string.IsNullOrWhiteSpace(atividade.ArquivoClienteCaminho))
+                    RegistrarHistorico(atividade.Id, "Cliente anexou arquivo inicial", "Cliente anexou o arquivo " + atividade.ArquivoClienteNome + ".");
+
                 TempData["Sucesso"] = "Atividade criada com sucesso!";
                 return RedirectToAction("Minhas");
             }
@@ -208,6 +217,8 @@ namespace ProjetoPericiaContabil.Controllers
                 atividade.Status = "EmElaboracao";
 
                 db.SaveChanges();
+
+                RegistrarHistorico(atividade.Id, "Funcion\u00e1rio pegou a atividade", "Funcion\u00e1rio assumiu a responsabilidade pela atividade.");
 
                 TempData["Sucesso"] = "Atividade atribu\u00edda com sucesso!";
                 return RedirectToAction("Disponiveis");
@@ -303,6 +314,8 @@ namespace ProjetoPericiaContabil.Controllers
                 atividade.Status = "Concluida";
                 db.SaveChanges();
 
+                RegistrarHistorico(atividade.Id, "Funcion\u00e1rio concluiu a atividade", "Funcion\u00e1rio marcou a atividade como conclu\u00edda.");
+
                 TempData["Sucesso"] = "Atividade conclu\u00edda!";
                 return RedirectToAction("MinhasFuncionario");
             }
@@ -372,6 +385,11 @@ namespace ProjetoPericiaContabil.Controllers
 
                 db.SaveChanges();
 
+                RegistrarHistorico(atividadeDb.Id, "Funcion\u00e1rio finalizou a atividade", "Funcion\u00e1rio finalizou a atividade e informou o resultado.");
+
+                if (!string.IsNullOrWhiteSpace(atividadeDb.ArquivoResultadoCaminho))
+                    RegistrarHistorico(atividadeDb.Id, "Funcion\u00e1rio anexou arquivo de resultado", "Funcion\u00e1rio anexou o arquivo " + atividadeDb.ArquivoResultadoNome + ".");
+
                 TempData["Sucesso"] = "Atividade finalizada!";
                 return RedirectToAction("MinhasFuncionario");
             }
@@ -399,6 +417,8 @@ namespace ProjetoPericiaContabil.Controllers
 
                 atividade.ClienteVisualizou = true;
                 db.SaveChanges();
+
+                RegistrarHistorico(atividade.Id, "Cliente visualizou o resultado", "Cliente confirmou a leitura do resultado da atividade.");
 
                 return RedirectToAction("Minhas");
             }
@@ -485,6 +505,8 @@ namespace ProjetoPericiaContabil.Controllers
                 atividadeDb.Resultado = atividade.Resultado;
 
                 db.SaveChanges();
+
+                RegistrarHistorico(atividadeDb.Id, "Funcion\u00e1rio editou resultado", "Funcion\u00e1rio atualizou o resultado da atividade.");
 
                 TempData["Sucesso"] = "Resultado atualizado!";
                 return RedirectToAction("MinhasFuncionario");
@@ -625,6 +647,26 @@ namespace ProjetoPericiaContabil.Controllers
                 return RedirectToAction("Disponiveis");
 
             return RedirectToAction("Login", "Usuario");
+        }
+
+        private void RegistrarHistorico(int? atividadeId, string acao, string descricao)
+        {
+            try
+            {
+                int? usuarioId = null;
+
+                if (Session["UsuarioId"] != null)
+                    usuarioId = (int)Session["UsuarioId"];
+
+                var nomeUsuario = Session["UsuarioLogado"] != null ? Session["UsuarioLogado"].ToString() : "Usu\u00e1rio n\u00e3o identificado";
+                var tipoUsuario = Session["Tipo"] != null ? Session["Tipo"].ToString() : "Desconhecido";
+
+                HistoricoHelper.Registrar(db, atividadeId, usuarioId, nomeUsuario, tipoUsuario, acao, descricao);
+            }
+            catch (Exception)
+            {
+                // O histórico não pode interromper o fluxo principal.
+            }
         }
 
         private static bool TipoCalculoEhPermitido(string tipoCalculo)

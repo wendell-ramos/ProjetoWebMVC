@@ -127,6 +127,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AtividadeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
@@ -134,6 +135,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CriptoHelper.cs" />
+    <Compile Include="Helpers\HistoricoHelper.cs" />
     <Compile Include="Helpers\UploadHelper.cs" />
     <Compile Include="Migrations\202604010032486_InitialCreate.cs" />
     <Compile Include="Migrations\202604010032486_InitialCreate.Designer.cs">
@@ -175,9 +177,14 @@
     <Compile Include="Migrations\202605020352000_AdicionarArquivosAtividade.Designer.cs">
       <DependentUpon>202605020352000_AdicionarArquivosAtividade.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202605020500000_CriarHistoricoAtividade.cs" />
+    <Compile Include="Migrations\202605020500000_CriarHistoricoAtividade.Designer.cs">
+      <DependentUpon>202605020500000_CriarHistoricoAtividade.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Atividade.cs" />
+    <Compile Include="Models\HistoricoAtividade.cs" />
     <Compile Include="Models\ViewModels\AtividadeDetailsViewModel.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -245,6 +252,7 @@
     <Content Include="Views\Atividade\Arquivadas.cshtml" />
     <Content Include="Views\Atividade\EditarResultado.cshtml" />
     <Content Include="Views\Atividade\Details.cshtml" />
+    <Content Include="Views\Admin\Historico.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -308,6 +316,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202605020352000_AdicionarArquivosAtividade.resx">
       <DependentUpon>202605020352000_AdicionarArquivosAtividade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202605020500000_CriarHistoricoAtividade.resx">
+      <DependentUpon>202605020500000_CriarHistoricoAtividade.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

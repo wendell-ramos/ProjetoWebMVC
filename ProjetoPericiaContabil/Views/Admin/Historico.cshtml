@@ -1,0 +1,339 @@
+@model List<ProjetoPericiaContabil.Models.HistoricoAtividade>
+@using System.Collections.Generic
+
+@{
+    Layout = null;
+    var atividadesLookup = ViewBag.AtividadesLookup as Dictionary<int, string> ?? new Dictionary<int, string>();
+}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'DM Sans', sans-serif;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #1a2332, #243044, #0f172a);
+        color: #fff;
+    }
+
+    .bg-circle {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.3;
+        pointer-events: none;
+    }
+
+    .circle1 {
+        width: 300px;
+        height: 300px;
+        background: #c9a84c;
+        top: 10%;
+        left: 10%;
+    }
+
+    .circle2 {
+        width: 400px;
+        height: 400px;
+        background: #3b82f6;
+        bottom: 10%;
+        right: 10%;
+    }
+
+    .container {
+        padding: 40px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 26px;
+        flex-wrap: wrap;
+    }
+
+    .header h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 30px;
+        margin: 0 0 8px;
+    }
+
+    .header p {
+        color: #ccc;
+        font-size: 13px;
+        margin: 0;
+    }
+
+    .filters,
+    .card {
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+    }
+
+    .filters {
+        padding: 18px;
+        margin-bottom: 22px;
+    }
+
+    .filter-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 12px;
+        align-items: end;
+    }
+
+    label {
+        display: block;
+        color: #c9a84c;
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    input,
+    select {
+        width: 100%;
+        box-sizing: border-box;
+        height: 38px;
+        padding: 0 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(255,255,255,0.18);
+        background: #fff;
+        color: #1a2332;
+        outline: none;
+        font-size: 13px;
+    }
+
+    input:focus,
+    select:focus {
+        border-color: #c9a84c;
+        box-shadow: 0 0 0 2px rgba(201,168,76,0.2);
+    }
+
+    select option {
+        background: #fff;
+        color: #1a2332;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 14px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        transition: 0.2s;
+        white-space: nowrap;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #c9a84c, #e0c36c);
+        color: #1a2332;
+    }
+
+    .btn-secondary {
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .card {
+        overflow: hidden;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        text-align: left;
+        padding: 14px;
+        font-size: 13px;
+        color: #c9a84c;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    td {
+        padding: 14px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        font-size: 13px;
+        vertical-align: top;
+        color: #ddd;
+    }
+
+    tr:hover {
+        background: rgba(255,255,255,0.05);
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.1);
+        color: #c9a84c;
+        font-size: 12px;
+    }
+
+    .link {
+        color: #c9a84c;
+        text-decoration: none;
+    }
+
+    .link:hover {
+        text-decoration: underline;
+    }
+
+    .empty {
+        padding: 18px;
+        color: #999;
+        font-style: italic;
+        font-size: 13px;
+    }
+
+    .alert {
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-size: 13px;
+        background: rgba(255, 80, 80, 0.15);
+        border: 1px solid rgba(255, 80, 80, 0.4);
+        color: #ffd6d6;
+    }
+
+    @@media (max-width: 900px) {
+        .container {
+            padding: 26px 14px;
+        }
+
+        .card {
+            overflow-x: auto;
+        }
+
+        table {
+            min-width: 920px;
+        }
+    }
+</style>
+
+<div class="bg-circle circle1"></div>
+<div class="bg-circle circle2"></div>
+
+<div class="container">
+    <div class="header">
+        <div>
+            <h2>Hist&oacute;rico do Sistema</h2>
+            <p>Visualize as principais a&ccedil;&otilde;es registradas no fluxo de atividades, usu&aacute;rios e arquivos.</p>
+        </div>
+        <a href="@Url.Action("Index", "Usuario")" class="btn btn-secondary">Voltar ao painel</a>
+    </div>
+
+    @if (TempData["Erro"] != null)
+    {
+        <div class="alert">@TempData["Erro"]</div>
+    }
+
+    <div class="filters">
+        @using (Html.BeginForm("Historico", "Admin", FormMethod.Get))
+        {
+            <div class="filter-grid">
+                <div>
+                    <label>Usu&aacute;rio</label>
+                    <input type="text" name="nomeUsuario" value="@ViewBag.NomeUsuario" placeholder="Nome do usu&aacute;rio" />
+                </div>
+
+                <div>
+                    <label>A&ccedil;&atilde;o</label>
+                    <input type="text" name="acao" value="@ViewBag.Acao" placeholder="Ex.: finalizou" />
+                </div>
+
+                <div>
+                    <label>Tipo do usu&aacute;rio</label>
+                    <select name="tipoUsuario">
+                        <option value="">Todos</option>
+                        <option value="Admin" @(ViewBag.TipoUsuario == "Admin" ? "selected" : "")>Admin</option>
+                        <option value="Cliente" @(ViewBag.TipoUsuario == "Cliente" ? "selected" : "")>Cliente</option>
+                        <option value="Funcionario" @(ViewBag.TipoUsuario == "Funcionario" ? "selected" : "")>Funcion&aacute;rio</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Data inicial</label>
+                    <input type="date" name="dataInicial" value="@ViewBag.DataInicial" />
+                </div>
+
+                <div>
+                    <label>Data final</label>
+                    <input type="date" name="dataFinal" value="@ViewBag.DataFinal" />
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                    <a href="@Url.Action("Historico", "Admin")" class="btn btn-secondary">Limpar</a>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="card">
+        @if (Model.Any())
+        {
+            <table>
+                <tr>
+                    <th>Data/Hora</th>
+                    <th>Usu&aacute;rio</th>
+                    <th>Tipo</th>
+                    <th>Atividade</th>
+                    <th>A&ccedil;&atilde;o</th>
+                    <th>Descri&ccedil;&atilde;o</th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.DataHora.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@item.NomeUsuario</td>
+                        <td><span class="badge">@item.TipoUsuario</span></td>
+                        <td>
+                            @if (item.AtividadeId.HasValue)
+                            {
+                                var titulo = atividadesLookup.ContainsKey(item.AtividadeId.Value) ? atividadesLookup[item.AtividadeId.Value] : "Atividade";
+                                <a class="link" href="@Url.Action("Details", "Atividade", new { id = item.AtividadeId.Value })">
+                                    #@item.AtividadeId - @titulo
+                                </a>
+                            }
+                            else
+                            {
+                                <span>Sem atividade</span>
+                            }
+                        </td>
+                        <td>@item.Acao</td>
+                        <td>@item.Descricao</td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <div class="empty">Nenhum registro encontrado.</div>
+        }
+    </div>
+</div>

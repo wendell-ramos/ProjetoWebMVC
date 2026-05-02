@@ -213,9 +213,51 @@
             background: rgba(255,255,255,0.18);
         }
 
+    .history-list {
+        display: grid;
+        gap: 10px;
+    }
+
+    .history-item {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 12px;
+        padding: 12px;
+        border-radius: 6px;
+        background: rgba(255,255,255,0.06);
+    }
+
+    .history-date {
+        color: #c9a84c;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .history-content strong {
+        display: block;
+        font-size: 13px;
+        color: #fff;
+        margin-bottom: 4px;
+    }
+
+    .history-content span {
+        display: block;
+        color: #aaa;
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+
+    .history-content p {
+        margin: 0;
+        color: #ddd;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
     @@media (max-width: 860px) {
         .grid,
-        .meta-grid {
+        .meta-grid,
+        .history-item {
             grid-template-columns: 1fr;
         }
 
@@ -369,5 +411,29 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="card" style="margin-top:18px;">
+        <h2>Hist&oacute;rico da atividade</h2>
+        @if (Model.Historicos != null && Model.Historicos.Any())
+        {
+            <div class="history-list">
+                @foreach (var item in Model.Historicos)
+                {
+                    <div class="history-item">
+                        <div class="history-date">@item.DataHora.ToString("dd/MM/yyyy HH:mm")</div>
+                        <div class="history-content">
+                            <strong>@item.Acao</strong>
+                            <span>@item.NomeUsuario (@item.TipoUsuario)</span>
+                            <p>@item.Descricao</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <span class="empty">Nenhum hist&oacute;rico registrado para esta atividade.</span>
+        }
     </div>
 </div>

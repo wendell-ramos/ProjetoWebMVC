@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using ProjetoPericiaContabil.Models;
+
 namespace ProjetoPericiaContabil.Models.ViewModels
 {
     public class AtividadeDetailsViewModel
@@ -20,5 +23,6 @@ namespace ProjetoPericiaContabil.Models.ViewModels
         public bool PodeEditarResultado { get; set; }
         public bool PodeFinalizar { get; set; }
         public bool PodeConfirmarLeitura { get; set; }
+        public List<HistoricoAtividade> Historicos { get; set; }
     }
 }

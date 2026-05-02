@@ -4,7 +4,7 @@
 
 @{
     Layout = null;
-    var cargosPermitidos = ViewBag.CargosPermitidos as string[] ?? new[] { "Cível", "Trabalhista", "Tributário", "Previdenciário" };
+    var cargosPermitidos = ViewBag.CargosPermitidos as string[] ?? new[] { "C\u00edvel", "Trabalhista", "Tribut\u00e1rio", "Previdenci\u00e1rio" };
     var atividadesPorStatus = ViewBag.AtividadesPorStatus as Dictionary<string, int> ?? new Dictionary<string, int>();
     var atividadesPorTipo = ViewBag.AtividadesPorTipo as Dictionary<string, int> ?? new Dictionary<string, int>();
     var rankingFuncionarios = ViewBag.RankingFuncionarios as List<Tuple<string, string, int>> ?? new List<Tuple<string, string, int>>();
@@ -85,6 +85,10 @@
             color: #ccc;
             font-size: 13px;
         }
+
+    .header-actions {
+        margin-top: 14px;
+    }
 
     .dashboard-grid {
         display: grid;
@@ -337,6 +341,9 @@
     <div class="header">
         <h2>Painel do Admin</h2>
         <p>Gerencie usu&aacute;rios, permiss&otilde;es e atividades</p>
+        <div class="header-actions">
+            <a href="@Url.Action("Historico", "Admin")" class="btn">Ver Hist&oacute;rico do Sistema</a>
+        </div>
     </div>
 
     @if (TempData["Erro"] != null)

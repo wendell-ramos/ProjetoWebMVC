@@ -385,3 +385,4 @@ C:\Users\USER\Documents\GitHub\ProjetoWebMVC\ProjetoPericiaContabil\obj\Debug\Pr
 C:\Users\USER\Documents\GitHub\ProjetoWebMVC\ProjetoPericiaContabil\obj\Debug\ProjetoPericiaContabil.Migrations.AjusteUsuarioTipo.resources
 C:\Users\USER\Documents\GitHub\ProjetoWebMVC\ProjetoPericiaContabil\obj\Debug\ProjetoPericiaContabil.Migrations.Ajuste.resources
 C:\Users\USER\Documents\GitHub\ProjetoWebMVC\ProjetoPericiaContabil\obj\Debug\ProjetoPericiaContabil.Migrations.AdicionarArquivosAtividade.resources
+C:\Users\USER\Documents\GitHub\ProjetoWebMVC\ProjetoPericiaContabil\obj\Debug\ProjetoPericiaContabil.Migrations.CriarHistoricoAtividade.resources

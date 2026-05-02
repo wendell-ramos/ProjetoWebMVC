@@ -10,5 +10,6 @@ namespace ProjetoPericiaContabil.Models
 
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Atividade> Atividades { get; set; }
+        public DbSet<HistoricoAtividade> HistoricosAtividade { get; set; }
     }
 }
