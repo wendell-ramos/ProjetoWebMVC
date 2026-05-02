@@ -204,6 +204,25 @@
         display: inline-block;
         white-space: nowrap;
     }
+
+    .arquivo-link {
+        display: inline-block;
+        color: #c9a84c;
+        font-size: 12px;
+        font-weight: bold;
+        text-decoration: none;
+        margin-bottom: 6px;
+    }
+
+        .arquivo-link:hover {
+            text-decoration: underline;
+        }
+
+    .arquivo-vazio {
+        color: #888;
+        font-size: 12px;
+        font-style: italic;
+    }
 </style>
 
 <!-- Fundo -->
@@ -230,6 +249,7 @@
             <tr>
                 <th>Título</th>
                 <th>Status</th>
+                <th>Arquivos</th>
                 <th>Resultado</th>
             </tr>
 
@@ -254,6 +274,27 @@
                         else
                         {
                             <span class="badge">@item.Status</span>
+                        }
+                    </td>
+
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.ArquivoClienteCaminho))
+                        {
+                            <a class="arquivo-link" href="@Url.Action("DownloadArquivo", "Atividade", new { id = item.Id, tipo = "cliente" })">
+                                Arquivo enviado
+                            </a>
+                            <br />
+                        }
+
+                        @if (!string.IsNullOrEmpty(item.ArquivoResultadoCaminho))
+                        {
+                            <a class="arquivo-link" href="@Url.Action("DownloadArquivo", "Atividade", new { id = item.Id, tipo = "resultado" })">
+                                Arquivo do resultado
+                            </a>
+                        }
+                        else if (string.IsNullOrEmpty(item.ArquivoClienteCaminho))
+                        {
+                            <span class="arquivo-vazio">Sem arquivos</span>
                         }
                     </td>
 

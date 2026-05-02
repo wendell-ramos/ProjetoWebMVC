@@ -1,6 +1,8 @@
-﻿using System;
+using System;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+using ProjetoPericiaContabil.Helpers;
 using ProjetoPericiaContabil.Models;
 
 namespace ProjetoPericiaContabil.Controllers
@@ -19,7 +21,7 @@ namespace ProjetoPericiaContabil.Controllers
                 var lista = db.Atividades.ToList();
                 return View(lista);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Erro"] = "Erro ao carregar atividades.";
                 return RedirectToAction("Index", "Home");
@@ -28,18 +30,51 @@ namespace ProjetoPericiaContabil.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            try
+            {
+                if (Session["Tipo"]?.ToString() != "Cliente")
+                    return RedirectToAction("Login", "Usuario");
+
+                return View();
+            }
+            catch (Exception)
+            {
+                TempData["Erro"] = "Erro ao abrir criação de atividade.";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]
-        public ActionResult Create(Atividade atividade)
+        public ActionResult Create(Atividade atividade, HttpPostedFileBase arquivoCliente)
         {
             try
             {
+                if (Session["Tipo"]?.ToString() != "Cliente")
+                    return RedirectToAction("Login", "Usuario");
+
                 var usuarioId = (int)Session["UsuarioId"];
 
                 atividade.ClienteId = usuarioId;
                 atividade.Status = "EmAnalise";
+                atividade.FuncionarioId = null;
+                atividade.Resultado = null;
+                atividade.ClienteVisualizou = false;
+
+                if (!ModelState.IsValid)
+                {
+                    return View(atividade);
+                }
+
+                var arquivoSalvo = UploadHelper.SalvarArquivo(
+                    arquivoCliente,
+                    "~/Uploads/Atividades/",
+                    UploadHelper.ExtensoesClientePermitidas);
+
+                if (arquivoSalvo != null)
+                {
+                    atividade.ArquivoClienteNome = arquivoSalvo.NomeOriginal;
+                    atividade.ArquivoClienteCaminho = arquivoSalvo.CaminhoVirtual;
+                }
 
                 db.Atividades.Add(atividade);
                 db.SaveChanges();
@@ -49,7 +84,7 @@ namespace ProjetoPericiaContabil.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Erro"] = "Erro ao criar atividade.";
+                ViewBag.Erro = "Erro ao criar atividade: " + ex.Message;
                 return View(atividade);
             }
         }
@@ -58,7 +93,17 @@ namespace ProjetoPericiaContabil.Controllers
         {
             try
             {
+                if (Session["Tipo"]?.ToString() != "Funcionario")
+                    return RedirectToAction("Login", "Usuario");
+
                 var atividade = db.Atividades.Find(id);
+
+                if (atividade == null)
+                {
+                    TempData["Erro"] = "Atividade não encontrada.";
+                    return RedirectToAction("Disponiveis");
+                }
+
                 var funcionarioId = (int)Session["UsuarioId"];
                 var funcionario = db.Usuarios.Find(funcionarioId);
 
@@ -76,7 +121,7 @@ namespace ProjetoPericiaContabil.Controllers
                 TempData["Sucesso"] = "Atividade atribuída com sucesso!";
                 return RedirectToAction("Disponiveis");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Erro"] = "Erro ao pegar atividade.";
                 return RedirectToAction("Disponiveis");
@@ -87,6 +132,9 @@ namespace ProjetoPericiaContabil.Controllers
         {
             try
             {
+                if (Session["Tipo"]?.ToString() != "Cliente")
+                    return RedirectToAction("Login", "Usuario");
+
                 var usuarioId = (int)Session["UsuarioId"];
 
                 var atividades = db.Atividades
@@ -95,7 +143,7 @@ namespace ProjetoPericiaContabil.Controllers
 
                 return View(atividades);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Erro"] = "Erro ao carregar suas atividades.";
                 return RedirectToAction("Index");
@@ -115,7 +163,7 @@ namespace ProjetoPericiaContabil.Controllers
 
                 return View(atividades);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Erro"] = "Erro ao carregar atividades disponíveis.";
                 return RedirectToAction("Index");
@@ -137,7 +185,7 @@ namespace ProjetoPericiaContabil.Controllers
 
                 return View(atividades);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Erro"] = "Erro ao carregar suas atividades.";
                 return RedirectToAction("Index");
@@ -148,7 +196,14 @@ namespace ProjetoPericiaContabil.Controllers
         {
             try
             {
+                if (Session["Tipo"]?.ToString() != "Funcionario")
+                    return RedirectToAction("Login", "Usuario");
+
                 var atividade = db.Atividades.Find(id);
+
+                if (atividade == null)
+                    return RedirectToAction("MinhasFuncionario");
+
                 var funcionarioId = (int)Session["UsuarioId"];
 
                 if (atividade.FuncionarioId != funcionarioId)
@@ -160,7 +215,7 @@ namespace ProjetoPericiaContabil.Controllers
                 TempData["Sucesso"] = "Atividade concluída!";
                 return RedirectToAction("MinhasFuncionario");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Erro"] = "Erro ao concluir atividade.";
                 return RedirectToAction("MinhasFuncionario");
@@ -171,10 +226,18 @@ namespace ProjetoPericiaContabil.Controllers
         {
             try
             {
+                if (Session["Tipo"]?.ToString() != "Funcionario")
+                    return RedirectToAction("Login", "Usuario");
+
                 var atividade = db.Atividades.Find(id);
+                var funcionarioId = (int)Session["UsuarioId"];
+
+                if (atividade == null || atividade.FuncionarioId != funcionarioId)
+                    return RedirectToAction("MinhasFuncionario");
+
                 return View(atividade);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Erro"] = "Erro ao abrir atividade.";
                 return RedirectToAction("MinhasFuncionario");
@@ -182,15 +245,39 @@ namespace ProjetoPericiaContabil.Controllers
         }
 
         [HttpPost]
-        public ActionResult Finalizar(Atividade atividade)
+        public ActionResult Finalizar(Atividade atividade, HttpPostedFileBase arquivoResultado)
         {
             try
             {
+                if (Session["Tipo"]?.ToString() != "Funcionario")
+                    return RedirectToAction("Login", "Usuario");
+
                 var atividadeDb = db.Atividades.Find(atividade.Id);
+                var funcionarioId = (int)Session["UsuarioId"];
+
+                if (atividadeDb == null || atividadeDb.FuncionarioId != funcionarioId)
+                    return RedirectToAction("MinhasFuncionario");
+
+                if (string.IsNullOrWhiteSpace(atividade.Resultado))
+                {
+                    ViewBag.Erro = "Informe o resultado da atividade.";
+                    return View(atividadeDb);
+                }
+
+                var arquivoSalvo = UploadHelper.SalvarArquivo(
+                    arquivoResultado,
+                    "~/Uploads/Resultados/",
+                    UploadHelper.ExtensoesResultadoPermitidas);
 
                 atividadeDb.Resultado = atividade.Resultado;
                 atividadeDb.Status = "Concluida";
                 atividadeDb.ClienteVisualizou = false;
+
+                if (arquivoSalvo != null)
+                {
+                    atividadeDb.ArquivoResultadoNome = arquivoSalvo.NomeOriginal;
+                    atividadeDb.ArquivoResultadoCaminho = arquivoSalvo.CaminhoVirtual;
+                }
 
                 db.SaveChanges();
 
@@ -199,8 +286,10 @@ namespace ProjetoPericiaContabil.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Erro"] = "Erro ao finalizar atividade.";
-                return View(atividade);
+                ViewBag.Erro = "Erro ao finalizar atividade: " + ex.Message;
+
+                var atividadeDb = db.Atividades.Find(atividade.Id);
+                return View(atividadeDb ?? atividade);
             }
         }
 
@@ -208,6 +297,9 @@ namespace ProjetoPericiaContabil.Controllers
         {
             try
             {
+                if (Session["Tipo"]?.ToString() != "Cliente")
+                    return RedirectToAction("Login", "Usuario");
+
                 var usuarioId = (int)Session["UsuarioId"];
                 var atividade = db.Atividades.Find(id);
 
@@ -219,10 +311,66 @@ namespace ProjetoPericiaContabil.Controllers
 
                 return RedirectToAction("Minhas");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Erro"] = "Erro ao confirmar leitura.";
                 return RedirectToAction("Minhas");
+            }
+        }
+
+        public ActionResult DownloadArquivo(int id, string tipo)
+        {
+            try
+            {
+                if (Session["UsuarioId"] == null)
+                    return RedirectToAction("Login", "Usuario");
+
+                var atividade = db.Atividades.Find(id);
+
+                if (atividade == null)
+                    return HttpNotFound();
+
+                var usuarioId = (int)Session["UsuarioId"];
+                var tipoUsuario = Session["Tipo"]?.ToString();
+                var podeBaixar = tipoUsuario == "Admin" ||
+                                 atividade.ClienteId == usuarioId ||
+                                 atividade.FuncionarioId == usuarioId;
+
+                if (!podeBaixar)
+                    return RedirectToAction("Index", "Home");
+
+                string nomeArquivo;
+                string caminhoArquivo;
+
+                if (tipo == "cliente")
+                {
+                    nomeArquivo = atividade.ArquivoClienteNome;
+                    caminhoArquivo = atividade.ArquivoClienteCaminho;
+                }
+                else if (tipo == "resultado")
+                {
+                    nomeArquivo = atividade.ArquivoResultadoNome;
+                    caminhoArquivo = atividade.ArquivoResultadoCaminho;
+                }
+                else
+                {
+                    return HttpNotFound();
+                }
+
+                if (string.IsNullOrWhiteSpace(nomeArquivo) || string.IsNullOrWhiteSpace(caminhoArquivo))
+                    return HttpNotFound();
+
+                var caminhoFisico = Server.MapPath(caminhoArquivo);
+
+                if (!System.IO.File.Exists(caminhoFisico))
+                    return HttpNotFound();
+
+                return File(caminhoFisico, MimeMapping.GetMimeMapping(nomeArquivo), nomeArquivo);
+            }
+            catch (Exception)
+            {
+                TempData["Erro"] = "Erro ao baixar arquivo.";
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -241,7 +389,7 @@ namespace ProjetoPericiaContabil.Controllers
 
                 return View(atividades);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Erro"] = "Erro ao carregar arquivadas.";
                 return RedirectToAction("Index");
@@ -263,7 +411,7 @@ namespace ProjetoPericiaContabil.Controllers
 
                 return View(atividade);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Erro"] = "Erro ao abrir edição.";
                 return RedirectToAction("MinhasFuncionario");
@@ -291,7 +439,7 @@ namespace ProjetoPericiaContabil.Controllers
                 TempData["Sucesso"] = "Resultado atualizado!";
                 return RedirectToAction("MinhasFuncionario");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Erro"] = "Erro ao editar resultado.";
                 return View(atividade);

@@ -128,6 +128,25 @@
         font-size: 12px;
         font-weight: bold;
     }
+
+    .arquivo-link {
+        display: inline-block;
+        color: #c9a84c;
+        font-size: 12px;
+        font-weight: bold;
+        text-decoration: none;
+        margin-bottom: 6px;
+    }
+
+        .arquivo-link:hover {
+            text-decoration: underline;
+        }
+
+    .arquivo-vazio {
+        color: #888;
+        font-size: 12px;
+        font-style: italic;
+    }
 </style>
 
 <div class="bg-circle circle1"></div>
@@ -150,6 +169,7 @@
                 <th>Título</th>
                 <th>Descrição</th>
                 <th>Resultado</th>
+                <th>Arquivos</th>
                 <th>Status</th>
             </tr>
 
@@ -159,6 +179,26 @@
                     <td>@item.Titulo</td>
                     <td><div class="descricao">@item.Descricao</div></td>
                     <td><div class="resultado">@item.Resultado</div></td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.ArquivoClienteCaminho))
+                        {
+                            <a class="arquivo-link" href="@Url.Action("DownloadArquivo", "Atividade", new { id = item.Id, tipo = "cliente" })">
+                                Arquivo do cliente
+                            </a>
+                            <br />
+                        }
+
+                        @if (!string.IsNullOrEmpty(item.ArquivoResultadoCaminho))
+                        {
+                            <a class="arquivo-link" href="@Url.Action("DownloadArquivo", "Atividade", new { id = item.Id, tipo = "resultado" })">
+                                Arquivo do resultado
+                            </a>
+                        }
+                        else if (string.IsNullOrEmpty(item.ArquivoClienteCaminho))
+                        {
+                            <span class="arquivo-vazio">Sem arquivos</span>
+                        }
+                    </td>
                     <td><span class="cliente-check">Visualizada pelo cliente</span></td>
                 </tr>
             }

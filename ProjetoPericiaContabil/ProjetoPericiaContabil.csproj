@@ -134,6 +134,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CriptoHelper.cs" />
+    <Compile Include="Helpers\UploadHelper.cs" />
     <Compile Include="Migrations\202604010032486_InitialCreate.cs" />
     <Compile Include="Migrations\202604010032486_InitialCreate.Designer.cs">
       <DependentUpon>202604010032486_InitialCreate.cs</DependentUpon>
@@ -169,6 +170,10 @@
     <Compile Include="Migrations\202604290751125_Ajuste.cs" />
     <Compile Include="Migrations\202604290751125_Ajuste.Designer.cs">
       <DependentUpon>202604290751125_Ajuste.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202605020352000_AdicionarArquivosAtividade.cs" />
+    <Compile Include="Migrations\202605020352000_AdicionarArquivosAtividade.Designer.cs">
+      <DependentUpon>202605020352000_AdicionarArquivosAtividade.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -241,6 +246,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Uploads\Atividades\" />
+    <Folder Include="Uploads\Resultados\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -296,6 +303,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202604290751125_Ajuste.resx">
       <DependentUpon>202604290751125_Ajuste.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202605020352000_AdicionarArquivosAtividade.resx">
+      <DependentUpon>202605020352000_AdicionarArquivosAtividade.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

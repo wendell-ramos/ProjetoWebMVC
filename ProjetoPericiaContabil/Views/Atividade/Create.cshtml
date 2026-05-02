@@ -113,6 +113,11 @@
             color: #ccc;
         }
 
+        input[type="file"] {
+            padding: 10px 12px;
+            height: auto;
+        }
+
         input:focus, select:focus {
             border-color: #c9a84c;
             background: rgba(255,255,255,0.15);
@@ -171,6 +176,17 @@
             box-shadow: 0 5px 20px rgba(201,168,76,0.4);
             transform: translateY(-1px);
         }
+
+    .erro-box {
+        background: rgba(255, 80, 80, 0.15);
+        border: 1px solid rgba(255, 80, 80, 0.4);
+        color: #ffd6d6;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        margin-bottom: 15px;
+        text-align: center;
+    }
 </style>
 
 <!-- Fundo -->
@@ -187,7 +203,14 @@
 
         <h2>Criar Atividade</h2>
 
-        <form method="post">
+        @if (ViewBag.Erro != null)
+        {
+            <div class="erro-box">@ViewBag.Erro</div>
+        }
+
+        @Html.ValidationSummary(false)
+
+        <form method="post" enctype="multipart/form-data">
 
             <label>Título</label>
             <input type="text" name="Titulo" placeholder="Digite o título da atividade" required />
@@ -201,6 +224,9 @@
                 <option value="Trabalhista">Trabalhista</option>
                 <option value="Tributario">Tributário</option>
             </select>
+
+            <label>Arquivo do Cliente</label>
+            <input type="file" name="arquivoCliente" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" />
 
             <div class="actions">
                 <a class="btn btn-back" href="@Url.Action("Minhas", "Atividade")">

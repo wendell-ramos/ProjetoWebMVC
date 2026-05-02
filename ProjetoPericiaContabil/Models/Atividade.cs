@@ -34,5 +34,17 @@ namespace ProjetoPericiaContabil.Models
         public string Resultado { get; set; }
 
         public bool ClienteVisualizou { get; set; } = false;
+
+        [StringLength(255)]
+        public string ArquivoClienteNome { get; set; }
+
+        [StringLength(500)]
+        public string ArquivoClienteCaminho { get; set; }
+
+        [StringLength(255)]
+        public string ArquivoResultadoNome { get; set; }
+
+        [StringLength(500)]
+        public string ArquivoResultadoCaminho { get; set; }
     }
 }

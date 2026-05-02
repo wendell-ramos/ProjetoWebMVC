@@ -129,6 +129,23 @@
             background: rgba(255,255,255,0.15);
         }
 
+    label {
+        display: block;
+        font-size: 13px;
+        color: #ccc;
+        margin: 15px 0 6px;
+    }
+
+    input[type="file"] {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 6px;
+        border: 1px solid rgba(255,255,255,0.2);
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        outline: none;
+    }
+
     .actions {
         margin-top: 20px;
         display: flex;
@@ -164,6 +181,29 @@
             box-shadow: 0 5px 20px rgba(201,168,76,0.4);
             transform: translateY(-1px);
         }
+
+    .arquivo-link {
+        display: inline-block;
+        margin-top: 4px;
+        color: #c9a84c;
+        font-size: 13px;
+        text-decoration: none;
+    }
+
+        .arquivo-link:hover {
+            text-decoration: underline;
+        }
+
+    .erro-box {
+        background: rgba(255, 80, 80, 0.15);
+        border: 1px solid rgba(255, 80, 80, 0.4);
+        color: #ffd6d6;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        margin-bottom: 15px;
+        text-align: center;
+    }
 </style>
 
 <!-- Fundo -->
@@ -180,6 +220,11 @@
 
         <h2>Finalizar Atividade</h2>
 
+        @if (ViewBag.Erro != null)
+        {
+            <div class="erro-box">@ViewBag.Erro</div>
+        }
+
         <div class="info">
             <strong>Atividade:</strong> @Model.Titulo
         </div>
@@ -192,10 +237,23 @@
             @Model.Descricao
         </div>
 
-        <form method="post">
+        @if (!string.IsNullOrEmpty(Model.ArquivoClienteCaminho))
+        {
+            <div class="info">
+                <strong>Arquivo do cliente:</strong>
+                <a class="arquivo-link" href="@Url.Action("DownloadArquivo", "Atividade", new { id = Model.Id, tipo = "cliente" })">
+                    @Model.ArquivoClienteNome
+                </a>
+            </div>
+        }
+
+        <form method="post" enctype="multipart/form-data">
             <input type="hidden" name="Id" value="@Model.Id" />
 
             <textarea name="Resultado" placeholder="Descreva o resultado da atividade..." required></textarea>
+
+            <label>Arquivo de Resultado</label>
+            <input type="file" name="arquivoResultado" accept=".pdf,.doc,.docx,.xls,.xlsx" />
 
             <div class="actions">
                 <a class="btn btn-back" href="@Url.Action("MinhasFuncionario", "Atividade")">

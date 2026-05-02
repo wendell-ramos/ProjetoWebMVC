@@ -159,6 +159,24 @@
         color: #ff6b6b;
         font-size: 13px;
     }
+
+    .arquivo-link {
+        display: inline-block;
+        color: #c9a84c;
+        font-size: 12px;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+        .arquivo-link:hover {
+            text-decoration: underline;
+        }
+
+    .arquivo-vazio {
+        color: #888;
+        font-size: 12px;
+        font-style: italic;
+    }
 </style>
 
 <!-- Fundo -->
@@ -192,6 +210,7 @@
                 <th>Título</th>
                 <th>Descrição</th>
                 <th>Tipo</th>
+                <th>Arquivo</th>
                 <th>Ação</th>
             </tr>
 
@@ -201,6 +220,18 @@
                     <td>@item.Titulo</td>
                     <td>@item.Descricao</td>
                     <td>@item.TipoCalculo</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.ArquivoClienteCaminho))
+                        {
+                            <a class="arquivo-link" href="@Url.Action("DownloadArquivo", "Atividade", new { id = item.Id, tipo = "cliente" })">
+                                Arquivo do cliente
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="arquivo-vazio">Sem arquivo</span>
+                        }
+                    </td>
                     <td>
                         <a class="btn" href="@Url.Action("Pegar", "Atividade", new { id = item.Id })">
                             Pegar
