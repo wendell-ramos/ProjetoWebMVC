@@ -16,6 +16,99 @@
     var maxTipo = atividadesPorTipo.Count > 0 ? atividadesPorTipo.Values.Max() : 1;
 }
 
+<style>
+    .usuarios-admin-table .col-acao {
+        width: 310px;
+    }
+
+    .usuarios-admin-table .acao-cell {
+        white-space: nowrap;
+    }
+
+    .usuarios-admin-table .form-cargo {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: nowrap;
+        width: auto;
+        max-width: 100%;
+    }
+
+    .usuarios-admin-table .form-cargo .form-select {
+        width: 170px;
+        min-width: 150px;
+        max-width: 180px;
+        flex: 0 0 170px;
+    }
+
+    .usuarios-admin-table .select-wrapper {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        flex: 0 0 170px;
+        width: 170px;
+        max-width: 180px;
+    }
+
+    .usuarios-admin-table .select-wrapper::after {
+        content: "";
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 6px solid #e6c28a;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+
+    .usuarios-admin-table .select-wrapper .form-select {
+        width: 100%;
+        max-width: 100%;
+        flex: 1 1 auto;
+        padding-right: 34px;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: none;
+    }
+
+    .usuarios-admin-table .form-cargo .btn {
+        min-height: 42px;
+        padding: 0.45rem 0.75rem;
+        white-space: nowrap;
+        line-height: 1.2;
+    }
+
+    @@media (max-width: 700px) {
+        .usuarios-admin-table .col-acao {
+            width: auto;
+        }
+
+        .usuarios-admin-table .acao-cell {
+            white-space: normal;
+        }
+
+        .usuarios-admin-table .form-cargo {
+            flex-wrap: wrap;
+        }
+
+        .usuarios-admin-table .form-cargo .form-select {
+            width: 100%;
+            max-width: 100%;
+            flex: 1 1 160px;
+        }
+
+        .usuarios-admin-table .select-wrapper {
+            width: 100%;
+            max-width: 100%;
+            flex: 1 1 160px;
+        }
+    }
+</style>
+
 <div class="page-header">
     <div>
         <h1 class="page-title">Painel do Admin</h1>
@@ -220,14 +313,14 @@
 
 <section class="card table-card">
     <div class="table-responsive">
-        <table class="table app-table">
+        <table class="table app-table usuarios-admin-table">
             <thead>
                 <tr>
                     <th>Nome</th>
                     <th>Email</th>
                     <th>Tipo</th>
                     <th>Cargo/Setor</th>
-                    <th>A&ccedil;&atilde;o</th>
+                    <th class="col-acao">A&ccedil;&atilde;o</th>
                 </tr>
             </thead>
             <tbody>
@@ -247,17 +340,19 @@
                                 <span class="empty">Sem cargo</span>
                             }
                         </td>
-                        <td>
+                        <td class="acao-cell">
                             @if (item.Tipo == "Cliente")
                             {
                                 using (Html.BeginForm("TornarFuncionario", "Usuario", new { id = item.Id }, FormMethod.Post, new { @class = "form-cargo" }))
                                 {
-                                    <select class="form-select" name="cargo" required>
-                                        @foreach (var cargo in cargosPermitidos)
-                                        {
-                                            <option value="@cargo">@cargo</option>
-                                        }
-                                    </select>
+                                    <div class="select-wrapper">
+                                        <select class="form-select" name="cargo" required>
+                                            @foreach (var cargo in cargosPermitidos)
+                                            {
+                                                <option value="@cargo">@cargo</option>
+                                            }
+                                        </select>
+                                    </div>
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         <i class="bi bi-person-check"></i> Tornar Funcion&aacute;rio
                                     </button>

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,12 +13,12 @@ namespace ProjetoPericiaContabil.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        private static readonly string[] TiposCalculoPermitidos =
+        private static readonly List<string> TiposCalculoPermitidos = new List<string>
         {
-            "C\u00edvel",
+            "Cível",
             "Trabalhista",
-            "Tribut\u00e1rio",
-            "Previdenci\u00e1rio"
+            "Tributário",
+            "Previdenciário"
         };
 
         public ActionResult Index()
@@ -682,13 +683,22 @@ namespace ProjetoPericiaContabil.Controllers
             tipoCalculo = tipoCalculo.Trim();
 
             if (tipoCalculo == "Civel")
-                return "C\u00edvel";
+                return "Cível";
 
             if (tipoCalculo == "Tributario")
-                return "Tribut\u00e1rio";
+                return "Tributário";
 
             if (tipoCalculo == "Previdenciario")
-                return "Previdenci\u00e1rio";
+                return "Previdenciário";
+
+            if (tipoCalculo == "CÃ­vel")
+                return "Cível";
+
+            if (tipoCalculo == "TributÃ¡rio")
+                return "Tributário";
+
+            if (tipoCalculo == "PrevidenciÃ¡rio")
+                return "Previdenciário";
 
             return tipoCalculo;
         }

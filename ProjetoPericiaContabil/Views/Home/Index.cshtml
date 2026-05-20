@@ -3,45 +3,30 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<section class="hero-panel">
+<div class="page-header">
     <div>
-        <span class="status-badge status-analise mb-3">Sistema de gest&atilde;o pericial</span>
-        <h1 class="hero-title">Per&iacute;cia Cont&aacute;bil com controle, rastreabilidade e organiza&ccedil;&atilde;o.</h1>
-        <p class="hero-copy">
-            Ambiente profissional para cria&ccedil;&atilde;o de atividades, acompanhamento por setor,
-            entrega de resultados, arquivos anexados e hist&oacute;rico administrativo.
-        </p>
-        <div class="actions mt-4">
-            <a class="btn btn-primary" href="@Url.Action("Login", "Usuario")">
-                <i class="bi bi-box-arrow-in-right"></i> Entrar no sistema
-            </a>
-        </div>
+        <h1 class="page-title">Projeto Per&iacute;cia Cont&aacute;bil</h1>
+        <p class="page-subtitle">Sistema para controle de atividades periciais, documentos, resultados e hist&oacute;rico administrativo.</p>
     </div>
+    <div class="page-actions">
+        <a class="btn btn-primary" href="@Url.Action("Login", "Usuario")">Entrar no sistema</a>
+    </div>
+</div>
 
-    <div class="surface">
-        <h2>Fluxo operacional</h2>
-        <div class="feature-list">
-            <div class="feature-item">
-                <i class="bi bi-file-earmark-plus"></i>
-                <div>
-                    <strong>Cliente cria atividade</strong>
-                    <div class="text-muted-app">Solicita an&aacute;lise e anexa documentos iniciais.</div>
-                </div>
-            </div>
-            <div class="feature-item">
-                <i class="bi bi-briefcase"></i>
-                <div>
-                    <strong>Funcion&aacute;rio assume pelo setor</strong>
-                    <div class="text-muted-app">Atividades seguem o tipo de c&aacute;lculo definido.</div>
-                </div>
-            </div>
-            <div class="feature-item">
-                <i class="bi bi-check2-circle"></i>
-                <div>
-                    <strong>Resultado e hist&oacute;rico</strong>
-                    <div class="text-muted-app">Entrega final, arquivos e logs ficam centralizados.</div>
-                </div>
-            </div>
+<section class="surface">
+    <h2>Fluxo operacional</h2>
+    <div class="feature-list">
+        <div class="feature-item">
+            <strong>Cliente cria atividade</strong>
+            <div class="text-muted-app">Solicita an&aacute;lise e pode anexar documentos iniciais.</div>
+        </div>
+        <div class="feature-item">
+            <strong>Funcion&aacute;rio assume pelo setor</strong>
+            <div class="text-muted-app">As atividades seguem o tipo de c&aacute;lculo escolhido.</div>
+        </div>
+        <div class="feature-item">
+            <strong>Resultado e hist&oacute;rico</strong>
+            <div class="text-muted-app">Arquivos finais e registros administrativos ficam organizados no sistema.</div>
         </div>
     </div>
 </section>

@@ -140,30 +140,31 @@
             }
         </section>
 
-        <section class="card">
-            <h2>A&ccedil;&otilde;es</h2>
-            <div class="actions">
-                @if (Model.PodeEditarResultado)
-                {
-                    <a class="btn btn-primary" href="@Url.Action("EditarResultado", "Atividade", new { id = Model.Id })">
-                        <i class="bi bi-pencil-square"></i> Editar resultado
-                    </a>
-                }
-                @if (Model.PodeFinalizar)
-                {
-                    <a class="btn btn-primary" href="@Url.Action("Finalizar", "Atividade", new { id = Model.Id })">
-                        <i class="bi bi-check2-circle"></i> Finalizar
-                    </a>
-                }
-                @if (Model.PodeConfirmarLeitura)
-                {
-                    <a class="btn btn-primary" href="@Url.Action("ConfirmarLeitura", "Atividade", new { id = Model.Id })">
-                        <i class="bi bi-check2"></i> Confirmar leitura
-                    </a>
-                }
-                <a class="btn btn-secondary" href="@Url.Action(voltarAction, voltarController)">Voltar</a>
-            </div>
-        </section>
+        @if (Model.PodeEditarResultado || Model.PodeFinalizar || Model.PodeConfirmarLeitura)
+        {
+            <section class="card">
+                <div class="actions">
+                    @if (Model.PodeEditarResultado)
+                    {
+                        <a class="btn btn-primary" href="@Url.Action("EditarResultado", "Atividade", new { id = Model.Id })">
+                            <i class="bi bi-pencil-square"></i> Editar resultado
+                        </a>
+                    }
+                    @if (Model.PodeFinalizar)
+                    {
+                        <a class="btn btn-primary" href="@Url.Action("Finalizar", "Atividade", new { id = Model.Id })">
+                            <i class="bi bi-check2-circle"></i> Finalizar
+                        </a>
+                    }
+                    @if (Model.PodeConfirmarLeitura)
+                    {
+                        <a class="btn btn-primary" href="@Url.Action("ConfirmarLeitura", "Atividade", new { id = Model.Id })">
+                            <i class="bi bi-check2"></i> Confirmar leitura
+                        </a>
+                    }
+                </div>
+            </section>
+        }
     </aside>
 </div>
 

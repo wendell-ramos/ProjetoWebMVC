@@ -6,26 +6,724 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Projeto Per&iacute;cia Cont&aacute;bil</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     @Styles.Render("~/Content/css")
+    <style>
+        :root {
+            --bg1: #0b1220;
+            --bg2: #111827;
+            --bg3: #0f172a;
+            --card: #182235;
+            --card-solid: #1f2937;
+            --border: rgba(255,255,255,0.10);
+            --border-strong: rgba(255,255,255,0.18);
+            --text: #f8fafc;
+            --muted: #cbd5e1;
+            --muted-2: #94a3b8;
+            --gold: #c89b5c;
+            --gold-light: #e6c28a;
+            --secondary: #334155;
+            --danger: #b91c1c;
+            --success: #15803d;
+            --blue: #2563eb;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: "DM Sans", Arial, sans-serif;
+            color: var(--text);
+            background: #0b1220;
+            background-attachment: fixed;
+            letter-spacing: 0;
+        }
+
+        body::before,
+        body::after,
+        .app-background,
+        .auth-card::before,
+        .form-card::before,
+        .card::before,
+        .surface::before,
+        .panel::before {
+            display: none !important;
+            content: none !important;
+        }
+
+        a {
+            color: var(--gold-light);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--gold-light);
+            text-decoration: underline;
+        }
+
+        .app-shell {
+            width: min(1160px, calc(100% - 32px));
+            margin: 0 auto;
+        }
+
+        .layout-auth .app-shell {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 0;
+        }
+
+        .app-main {
+            padding: 30px 0 48px;
+        }
+
+        .layout-auth .app-main {
+            padding: 0;
+        }
+
+        .app-navbar {
+            background: #0b1220;
+            border-bottom: 1px solid var(--border);
+            padding: 10px 0;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+
+        .navbar-toggler {
+            border-color: rgba(255,255,255,0.28);
+            background: rgba(255,255,255,0.12);
+        }
+
+        .brand-lockup,
+        .brand-lockup:hover {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .brand-lockup {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-mark,
+        .user-avatar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: #c89b5c;
+            color: #0b1220;
+            font-weight: 800;
+            font-size: 15px;
+            box-shadow: none;
+        }
+
+        .brand-lockup strong,
+        .brand-lockup small,
+        .user-meta strong,
+        .user-meta small {
+            display: block;
+            line-height: 1.15;
+        }
+
+        .brand-lockup small,
+        .app-navbar .user-meta small,
+        .page-subtitle,
+        .text-muted-app,
+        .form-text,
+        .empty,
+        .arquivo-vazio {
+            color: var(--muted);
+        }
+
+        .app-navbar .brand-lockup small,
+        .app-navbar .user-meta small {
+            color: rgba(255,255,255,0.78);
+        }
+
+        .app-nav-links {
+            gap: 4px;
+            margin-left: 24px;
+        }
+
+        .app-nav-links .nav-link {
+            color: rgba(255,255,255,0.82);
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .app-nav-links .nav-link:hover {
+            color: #ffffff;
+            background: rgba(255,255,255,0.12);
+            text-decoration: none;
+        }
+
+        .user-chip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            background: rgba(255,255,255,0.14);
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.24);
+        }
+
+        .page-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .page-title,
+        .hero-title {
+            margin: 0;
+            color: var(--text);
+            font-weight: 700;
+            letter-spacing: 0;
+        }
+
+        .page-title {
+            font-size: 30px;
+        }
+
+        .page-subtitle {
+            margin: 6px 0 0;
+            max-width: 760px;
+        }
+
+        .page-actions,
+        .actions,
+        .table-actions,
+        .form-cargo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .auth-card,
+        .card,
+        .form-card,
+        .surface,
+        .panel,
+        .metric-card,
+        .filters,
+        .info-box,
+        .descricao-box,
+        .file-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.22);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+
+        .auth-card {
+            width: min(430px, 100%);
+            padding: 30px;
+        }
+
+        .auth-brand {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .auth-brand .brand-mark {
+            margin: 0 auto 12px;
+            width: 44px;
+            height: 44px;
+        }
+
+        .auth-brand h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .auth-brand p,
+        .auth-link {
+            color: var(--muted);
+        }
+
+        .auth-link {
+            text-align: center;
+            margin-top: 18px;
+        }
+
+        .card,
+        .form-card,
+        .surface,
+        .panel,
+        .filters {
+            padding: 20px;
+        }
+
+        .table-card {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .card h2,
+        .panel h3,
+        .surface h2 {
+            margin-top: 0;
+            margin-bottom: 14px;
+            color: var(--text);
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .form-label {
+            color: var(--text);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 42px;
+            color: var(--text);
+            background: #111827;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+        }
+
+        textarea.form-control {
+            min-height: 135px;
+            resize: vertical;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            color: var(--text);
+            background: #111827;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 0.16rem rgba(200,155,92,0.20);
+        }
+
+        .form-control::placeholder {
+            color: var(--muted-2);
+        }
+
+        .form-select option {
+            color: #111827;
+            background: #ffffff;
+        }
+
+        input[type="file"].form-control {
+            padding: 8px 10px;
+        }
+
+        input[type="file"].form-control::file-selector-button {
+            border: 0;
+            border-radius: 5px;
+            margin-right: 10px;
+            padding: 6px 10px;
+            background: var(--secondary);
+            color: var(--text);
+        }
+
+        .btn {
+            border-radius: 7px;
+            font-weight: 700;
+            border: 1px solid transparent;
+            box-shadow: none;
+        }
+
+        .btn i,
+        .metric-icon,
+        .feature-item i {
+            display: none;
+        }
+
+        .btn-primary {
+            background: #c89b5c;
+            border-color: var(--gold);
+            color: #0b1220;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background: #a8793f;
+            border-color: #a8793f;
+            color: #0b1220;
+            text-decoration: none;
+        }
+
+        .btn-secondary,
+        .btn-outline-light {
+            background: var(--secondary);
+            border-color: var(--secondary);
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover,
+        .btn-outline-light:hover {
+            background: #475569;
+            border-color: #475569;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: var(--text);
+        }
+
+        .alert {
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+
+        .alert-danger,
+        .validation-summary-errors {
+            color: #fecaca;
+            background: rgba(185,28,28,0.18);
+            border: 1px solid rgba(248,113,113,0.28);
+            border-radius: 8px;
+            padding: 12px 14px;
+        }
+
+        .alert-success {
+            color: #bbf7d0;
+            background: rgba(21,128,61,0.18);
+            border-color: rgba(34,197,94,0.28);
+        }
+
+        .validation-summary-errors ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        .field-validation-error {
+            display: block;
+            margin-top: 5px;
+            color: #fecaca;
+            font-size: 13px;
+        }
+
+        .app-table {
+            margin: 0;
+            color: var(--text);
+            border-color: var(--border);
+        }
+
+        .app-table thead th {
+            color: var(--muted);
+            background: #111827;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: .02em;
+        }
+
+        .app-table tbody td {
+            color: var(--text);
+            border-color: var(--border);
+            vertical-align: middle;
+            background: #182235;
+        }
+
+        .app-table tbody tr:hover td {
+            background: #1f2937;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 9px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            color: var(--text);
+            background: #1f2937;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status-analise {
+            color: #856404;
+            background: #fff3cd;
+            border-color: #eadb9c;
+        }
+
+        .status-elaboracao {
+            color: #1d4ed8;
+            background: #dbeafe;
+            border-color: #bfdbfe;
+        }
+
+        .status-concluida,
+        .status-success {
+            color: #166534;
+            background: #dcfce7;
+            border-color: #bbf7d0;
+        }
+
+        .status-arquivada,
+        .status-default {
+            color: #374151;
+            background: #e5e7eb;
+            border-color: #d1d5db;
+        }
+
+        .metric-grid,
+        .panel-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .metric-grid {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            margin-bottom: 20px;
+        }
+
+        .panel-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .metric-card {
+            padding: 18px;
+        }
+
+        .metric-label,
+        .activity-meta,
+        .history-date {
+            display: block;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .metric-value {
+            display: block;
+            margin-top: 8px;
+            font-size: 30px;
+            color: var(--gold);
+        }
+
+        .bar-row {
+            margin-bottom: 12px;
+        }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .bar-track {
+            height: 9px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.10);
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: var(--gold-light);
+        }
+
+        .activity-list,
+        .history-list,
+        .feature-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .activity-item,
+        .history-item,
+        .feature-item {
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #111827;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .activity-title,
+        .file-name {
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .filter-grid .actions {
+            align-self: end;
+        }
+
+        .form-cargo {
+            align-items: stretch;
+        }
+
+        .form-cargo .form-select {
+            min-width: 170px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.6fr) minmax(280px, .9fr);
+            gap: 16px;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .meta {
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #111827;
+        }
+
+        .meta span {
+            display: block;
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .text-block,
+        .descricao,
+        .resultado {
+            color: var(--text);
+            white-space: pre-wrap;
+        }
+
+        .descricao,
+        .resultado {
+            max-width: 360px;
+        }
+
+        .file-card {
+            padding: 14px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .arquivo-link,
+        .link {
+            color: var(--gold-light);
+            font-weight: 700;
+        }
+
+        .hero-panel {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
+            gap: 20px;
+            align-items: center;
+            min-height: calc(100vh - 150px);
+        }
+
+        .hero-title {
+            max-width: 720px;
+            font-size: 42px;
+            line-height: 1.08;
+        }
+
+        .hero-copy {
+            max-width: 660px;
+            margin-top: 14px;
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+        .mb-3 {
+            margin-bottom: 1rem !important;
+        }
+
+        .mt-2 {
+            margin-top: .5rem !important;
+        }
+
+        .mt-3 {
+            margin-top: 1rem !important;
+        }
+
+        .mt-4 {
+            margin-top: 1.5rem !important;
+        }
+
+        @@media (max-width: 900px) {
+            .page-header,
+            .activity-item {
+                display: block;
+            }
+
+            .page-actions,
+            .actions {
+                margin-top: 12px;
+            }
+
+            .metric-grid,
+            .panel-grid,
+            .details-grid,
+            .hero-panel,
+            .filter-grid,
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .app-nav-links {
+                margin-left: 0;
+                margin-top: 12px;
+            }
+
+            .user-chip {
+                margin-top: 12px;
+                align-items: flex-start;
+            }
+        }
+    </style>
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
-    @{
-        var usuarioLogado = Session["UsuarioLogado"] != null ? Session["UsuarioLogado"].ToString() : "";
-        var tipoUsuario = Session["Tipo"] != null ? Session["Tipo"].ToString() : "";
-        var estaLogado = Session["UsuarioId"] != null;
-    }
-
-    <div class="app-background"></div>
+@{
+    var usuarioLogado = Session["UsuarioLogado"] != null ? Session["UsuarioLogado"].ToString() : "";
+    var tipoUsuario = Session["Tipo"] != null ? Session["Tipo"].ToString() : "";
+    var estaLogado = Session["UsuarioId"] != null;
+}
+<body class="@(estaLogado ? "layout-internal" : "layout-auth")">
 
     @if (estaLogado)
     {
         <nav class="navbar navbar-expand-lg app-navbar">
             <div class="container-fluid app-shell">
                 <a class="navbar-brand brand-lockup" href="@Url.Action("Index", "Home")">
-                    <span class="brand-mark"><i class="bi bi-bank2"></i></span>
+                    <span class="brand-mark"><i class="bi bi-bank"></i></span>
                     <span>
                         <strong>Per&iacute;cia Cont&aacute;bil</strong>
                         <small>Gest&atilde;o pericial</small>
@@ -40,32 +738,32 @@
                     <ul class="navbar-nav app-nav-links me-auto">
                         @if (tipoUsuario == "Admin")
                         {
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Usuario")"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Usuario")"><i class="bi bi-people"></i> Usu&aacute;rios</a></li>
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Historico", "Admin")"><i class="bi bi-clock-history"></i> Hist&oacute;rico</a></li>
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Atividade")"><i class="bi bi-folder2-open"></i> Atividades</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Usuario")">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Usuario")">Usu&aacute;rios</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Historico", "Admin")">Hist&oacute;rico</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Atividade")">Atividades</a></li>
                         }
                         else if (tipoUsuario == "Funcionario")
                         {
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Disponiveis", "Atividade")"><i class="bi bi-inbox"></i> Dispon&iacute;veis</a></li>
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("MinhasFuncionario", "Atividade")"><i class="bi bi-briefcase"></i> Minhas Atividades</a></li>
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Arquivadas", "Atividade")"><i class="bi bi-archive"></i> Arquivadas</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Disponiveis", "Atividade")">Dispon&iacute;veis</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("MinhasFuncionario", "Atividade")">Minhas Atividades</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Arquivadas", "Atividade")">Arquivadas</a></li>
                         }
                         else if (tipoUsuario == "Cliente")
                         {
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Minhas", "Atividade")"><i class="bi bi-list-check"></i> Minhas Atividades</a></li>
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Create", "Atividade")"><i class="bi bi-plus-circle"></i> Nova Atividade</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Minhas", "Atividade")">Minhas Atividades</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Create", "Atividade")">Nova Atividade</a></li>
                         }
                     </ul>
 
                     <div class="user-chip">
-                        <span class="user-avatar"><i class="bi bi-person"></i></span>
+                        <span class="user-avatar">@(!string.IsNullOrWhiteSpace(usuarioLogado) ? usuarioLogado.Substring(0, 1).ToUpper() : "U")</span>
                         <span class="user-meta">
                             <strong>@usuarioLogado</strong>
                             <small>@tipoUsuario</small>
                         </span>
                         <a class="btn btn-outline-light btn-sm" href="@Url.Action("Logout", "Usuario")">
-                            <i class="bi bi-box-arrow-right"></i> Sair
+                            Sair
                         </a>
                     </div>
                 </div>
