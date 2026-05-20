@@ -48,43 +48,43 @@
 <section class="form-card">
     @if (ViewBag.Erro != null)
     {
-        <div class="alert alert-danger">@ViewBag.Erro</div>
+        <div class="alert alert-danger" role="alert">@ViewBag.Erro</div>
     }
 
-    @Html.ValidationSummary(false, "", new { @class = "validation-summary-errors" })
+    @Html.ValidationSummary(false, "", new { @class = "validation-summary-errors", role = "alert" })
 
-    <form method="post" enctype="multipart/form-data" class="d-grid gap-3">
+    <form method="post" enctype="multipart/form-data" class="d-grid gap-3" aria-label="Formul&aacute;rio para criar atividade">
         <div>
-            <label class="form-label">T&iacute;tulo</label>
-            <input class="form-control" type="text" name="Titulo" value="@(Model != null ? Model.Titulo : "")" placeholder="Digite o t&iacute;tulo da atividade" required />
+            <label class="form-label" for="Titulo">T&iacute;tulo</label>
+            <input class="form-control" type="text" id="Titulo" name="Titulo" value="@(Model != null ? Model.Titulo : "")" placeholder="Digite o t&iacute;tulo da atividade" required />
         </div>
 
         <div>
-            <label class="form-label">Descri&ccedil;&atilde;o</label>
-            <textarea class="form-control" name="Descricao" placeholder="Descreva o que precisa ser analisado..." required>@(Model != null ? Model.Descricao : "")</textarea>
+            <label class="form-label" for="Descricao">Descri&ccedil;&atilde;o</label>
+            <textarea class="form-control" id="Descricao" name="Descricao" placeholder="Descreva o que precisa ser analisado..." required>@(Model != null ? Model.Descricao : "")</textarea>
         </div>
 
         <div>
-            <label class="form-label">Tipo de C&aacute;lculo</label>
+            <label class="form-label" for="TipoCalculo">Tipo de C&aacute;lculo</label>
             <div class="select-wrapper atividade-create-select">
-            <select class="form-select" name="TipoCalculo" required>
-                <option value="Civel" @(Model != null && (Model.TipoCalculo == "Cível" || Model.TipoCalculo == "Civel") ? "selected" : "")>C&iacute;vel</option>
-                <option value="Trabalhista" @(Model != null && Model.TipoCalculo == "Trabalhista" ? "selected" : "")>Trabalhista</option>
-                <option value="Tributario" @(Model != null && (Model.TipoCalculo == "Tributário" || Model.TipoCalculo == "Tributario") ? "selected" : "")>Tribut&aacute;rio</option>
-                <option value="Previdenciario" @(Model != null && (Model.TipoCalculo == "Previdenciário" || Model.TipoCalculo == "Previdenciario") ? "selected" : "")>Previdenci&aacute;rio</option>
-            </select>
+                <select class="form-select" id="TipoCalculo" name="TipoCalculo" required aria-label="Tipo de c&aacute;lculo">
+                    <option value="Civel" @(Model != null && (Model.TipoCalculo == "Cível" || Model.TipoCalculo == "Civel") ? "selected" : "")>C&iacute;vel</option>
+                    <option value="Trabalhista" @(Model != null && Model.TipoCalculo == "Trabalhista" ? "selected" : "")>Trabalhista</option>
+                    <option value="Tributario" @(Model != null && (Model.TipoCalculo == "Tributário" || Model.TipoCalculo == "Tributario") ? "selected" : "")>Tribut&aacute;rio</option>
+                    <option value="Previdenciario" @(Model != null && (Model.TipoCalculo == "Previdenciário" || Model.TipoCalculo == "Previdenciario") ? "selected" : "")>Previdenci&aacute;rio</option>
+                </select>
             </div>
         </div>
 
         <div>
-            <label class="form-label">Arquivo do Cliente</label>
-            <input class="form-control" type="file" name="arquivoCliente" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" />
-            <div class="form-text text-muted-app">PDF, DOC, DOCX, XLS, XLSX, PNG ou JPG.</div>
+            <label class="form-label" for="arquivoCliente">Arquivo do Cliente</label>
+            <input class="form-control" type="file" id="arquivoCliente" name="arquivoCliente" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" aria-describedby="arquivoClienteAjuda" />
+            <div class="form-text text-muted-app" id="arquivoClienteAjuda">PDF, DOC, DOCX, XLS, XLSX, PNG ou JPG. Tamanho m&aacute;ximo de 10 MB.</div>
         </div>
 
         <div class="actions justify-content-between">
-            <a class="btn btn-secondary" href="@Url.Action("Minhas", "Atividade")">Cancelar</a>
-            <button type="submit" class="btn btn-primary">
+            <a class="btn btn-secondary" href="@Url.Action("Minhas", "Atividade")" aria-label="Cancelar cria&ccedil;&atilde;o da atividade">Cancelar</a>
+            <button type="submit" class="btn btn-primary" aria-label="Salvar atividade">
                 <i class="bi bi-check2-circle"></i> Salvar Atividade
             </button>
         </div>

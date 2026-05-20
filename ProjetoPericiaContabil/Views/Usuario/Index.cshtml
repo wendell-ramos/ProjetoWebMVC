@@ -123,12 +123,12 @@
 
 @if (TempData["Erro"] != null)
 {
-    <div class="alert alert-danger">@TempData["Erro"]</div>
+    <div class="alert alert-danger" role="alert">@TempData["Erro"]</div>
 }
 
 @if (TempData["Sucesso"] != null)
 {
-    <div class="alert alert-success">@TempData["Sucesso"]</div>
+    <div class="alert alert-success" role="status">@TempData["Sucesso"]</div>
 }
 
 <section class="metric-grid">
@@ -316,11 +316,11 @@
         <table class="table app-table usuarios-admin-table">
             <thead>
                 <tr>
-                    <th>Nome</th>
-                    <th>Email</th>
-                    <th>Tipo</th>
-                    <th>Cargo/Setor</th>
-                    <th class="col-acao">A&ccedil;&atilde;o</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Cargo/Setor</th>
+                    <th scope="col" class="col-acao">A&ccedil;&atilde;o</th>
                 </tr>
             </thead>
             <tbody>
@@ -346,14 +346,14 @@
                                 using (Html.BeginForm("TornarFuncionario", "Usuario", new { id = item.Id }, FormMethod.Post, new { @class = "form-cargo" }))
                                 {
                                     <div class="select-wrapper">
-                                        <select class="form-select" name="cargo" required>
+                                        <select class="form-select" name="cargo" required aria-label="Selecionar cargo ou setor do funcion&aacute;rio">
                                             @foreach (var cargo in cargosPermitidos)
                                             {
                                                 <option value="@cargo">@cargo</option>
                                             }
                                         </select>
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-sm">
+                                    <button type="submit" class="btn btn-primary btn-sm" aria-label="Tornar usu&aacute;rio em funcion&aacute;rio">
                                         <i class="bi bi-person-check"></i> Tornar Funcion&aacute;rio
                                     </button>
                                 }

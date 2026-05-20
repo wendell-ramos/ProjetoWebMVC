@@ -22,11 +22,11 @@
         <table class="table app-table">
             <thead>
                 <tr>
-                    <th>T&iacute;tulo</th>
-                    <th>Status</th>
-                    <th>Arquivos</th>
-                    <th>Resultado</th>
-                    <th>A&ccedil;&atilde;o</th>
+                    <th scope="col">T&iacute;tulo</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Arquivos</th>
+                    <th scope="col">Resultado</th>
+                    <th scope="col">A&ccedil;&atilde;o</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,13 +41,13 @@
                         <td>
                             @if (!string.IsNullOrEmpty(item.ArquivoClienteCaminho))
                             {
-                                <a class="arquivo-link d-block" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = item.Id })">
+                                <a class="arquivo-link d-block" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = item.Id })" aria-label="Baixar arquivo enviado na atividade @item.Titulo">
                                     <i class="bi bi-paperclip"></i> Arquivo enviado
                                 </a>
                             }
                             @if (!string.IsNullOrEmpty(item.ArquivoResultadoCaminho))
                             {
-                                <a class="arquivo-link d-block" href="@Url.Action("BaixarArquivoResultado", "Atividade", new { id = item.Id })">
+                                <a class="arquivo-link d-block" href="@Url.Action("BaixarArquivoResultado", "Atividade", new { id = item.Id })" aria-label="Baixar arquivo de resultado da atividade @item.Titulo">
                                     <i class="bi bi-file-earmark-check"></i> Arquivo do resultado
                                 </a>
                             }
@@ -62,7 +62,7 @@
                                 <div class="resultado">@item.Resultado</div>
                                 if (item.Status == "Concluida" && item.ClienteVisualizou == false)
                                 {
-                                    <a class="btn btn-primary btn-sm mt-2" href="@Url.Action("ConfirmarLeitura", "Atividade", new { id = item.Id })">
+                                    <a class="btn btn-primary btn-sm mt-2" href="@Url.Action("ConfirmarLeitura", "Atividade", new { id = item.Id })" aria-label="Marcar resultado da atividade @item.Titulo como visualizado">
                                         <i class="bi bi-check2"></i> Marcar como visualizado
                                     </a>
                                 }
@@ -77,7 +77,7 @@
                             }
                         </td>
                         <td>
-                            <a class="btn btn-secondary btn-sm" href="@Url.Action("Details", "Atividade", new { id = item.Id })">
+                            <a class="btn btn-secondary btn-sm" href="@Url.Action("Details", "Atividade", new { id = item.Id })" aria-label="Ver detalhes da atividade @item.Titulo">
                                 <i class="bi bi-eye"></i> Detalhes
                             </a>
                         </td>

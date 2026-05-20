@@ -25,11 +25,11 @@
         <table class="table app-table">
             <thead>
                 <tr>
-                    <th>T&iacute;tulo</th>
-                    <th>Descri&ccedil;&atilde;o</th>
-                    <th>Arquivos</th>
-                    <th>Status</th>
-                    <th>A&ccedil;&atilde;o</th>
+                    <th scope="col">T&iacute;tulo</th>
+                    <th scope="col">Descri&ccedil;&atilde;o</th>
+                    <th scope="col">Arquivos</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">A&ccedil;&atilde;o</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,13 +44,13 @@
                         <td>
                             @if (!string.IsNullOrEmpty(item.ArquivoClienteCaminho))
                             {
-                                <a class="arquivo-link d-block" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = item.Id })">
+                                <a class="arquivo-link d-block" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = item.Id })" aria-label="Baixar arquivo do cliente da atividade @item.Titulo">
                                     <i class="bi bi-paperclip"></i> Arquivo do cliente
                                 </a>
                             }
                             @if (!string.IsNullOrEmpty(item.ArquivoResultadoCaminho))
                             {
-                                <a class="arquivo-link d-block" href="@Url.Action("BaixarArquivoResultado", "Atividade", new { id = item.Id })">
+                                <a class="arquivo-link d-block" href="@Url.Action("BaixarArquivoResultado", "Atividade", new { id = item.Id })" aria-label="Baixar arquivo do resultado da atividade @item.Titulo">
                                     <i class="bi bi-file-earmark-check"></i> Arquivo do resultado
                                 </a>
                             }
@@ -62,18 +62,18 @@
                         <td><span class="status-badge @statusClass">@Html.Raw(statusText)</span></td>
                         <td>
                             <div class="table-actions">
-                                <a class="btn btn-secondary btn-sm" href="@Url.Action("Details", "Atividade", new { id = item.Id })">
+                                <a class="btn btn-secondary btn-sm" href="@Url.Action("Details", "Atividade", new { id = item.Id })" aria-label="Ver detalhes da atividade @item.Titulo">
                                     <i class="bi bi-eye"></i> Detalhes
                                 </a>
                                 @if (item.Status == "EmElaboracao")
                                 {
-                                    <a class="btn btn-primary btn-sm" href="@Url.Action("Finalizar", "Atividade", new { id = item.Id })">
+                                    <a class="btn btn-primary btn-sm" href="@Url.Action("Finalizar", "Atividade", new { id = item.Id })" aria-label="Finalizar atividade @item.Titulo">
                                         <i class="bi bi-check2-circle"></i> Finalizar
                                     </a>
                                 }
                                 else if (item.Status == "Concluida" && item.ClienteVisualizou == false)
                                 {
-                                    <a class="btn btn-primary btn-sm" href="@Url.Action("EditarResultado", "Atividade", new { id = item.Id })">
+                                    <a class="btn btn-primary btn-sm" href="@Url.Action("EditarResultado", "Atividade", new { id = item.Id })" aria-label="Editar resultado da atividade @item.Titulo">
                                         <i class="bi bi-pencil-square"></i> Editar Resultado
                                     </a>
                                 }

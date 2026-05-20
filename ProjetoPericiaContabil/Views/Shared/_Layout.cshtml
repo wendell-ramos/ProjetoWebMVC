@@ -5,8 +5,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Projeto Per&iacute;cia Cont&aacute;bil</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     @Styles.Render("~/Content/css")
     <style>
@@ -32,15 +30,41 @@
         html,
         body {
             min-height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
         }
 
         body {
             margin: 0;
-            font-family: "DM Sans", Arial, sans-serif;
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif !important;
+            font-size: 15px;
             color: var(--text);
             background: #0b1220;
             background-attachment: fixed;
             letter-spacing: 0;
+            overflow-x: hidden;
+        }
+
+        body,
+        body :not(.bi),
+        input,
+        select,
+        textarea,
+        button {
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif !important;
+        }
+
+        img,
+        svg,
+        video,
+        canvas {
+            max-width: 100%;
         }
 
         body::before,
@@ -65,9 +89,21 @@
             text-decoration: underline;
         }
 
+        a:focus-visible,
+        button:focus-visible,
+        .btn:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid var(--gold-light);
+            outline-offset: 2px;
+        }
+
         .app-shell {
             width: min(1160px, calc(100% - 32px));
             margin: 0 auto;
+            max-width: 100%;
         }
 
         .layout-auth .app-shell {
@@ -132,6 +168,7 @@
         .user-meta small {
             display: block;
             line-height: 1.15;
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif !important;
         }
 
         .brand-lockup small,
@@ -152,6 +189,7 @@
         .app-nav-links {
             gap: 4px;
             margin-left: 24px;
+            flex-wrap: wrap;
         }
 
         .app-nav-links .nav-link {
@@ -172,6 +210,7 @@
             align-items: center;
             gap: 10px;
             color: #ffffff;
+            flex-wrap: wrap;
         }
 
         .user-avatar {
@@ -188,6 +227,7 @@
             justify-content: space-between;
             gap: 16px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .page-title,
@@ -196,6 +236,7 @@
             color: var(--text);
             font-weight: 700;
             letter-spacing: 0;
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif !important;
         }
 
         .page-title {
@@ -215,6 +256,7 @@
             align-items: center;
             gap: 8px;
             flex-wrap: wrap;
+            max-width: 100%;
         }
 
         .auth-card,
@@ -256,6 +298,7 @@
             margin: 0;
             font-size: 28px;
             font-weight: 700;
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif !important;
         }
 
         .auth-brand p,
@@ -274,11 +317,20 @@
         .panel,
         .filters {
             padding: 20px;
+            width: 100%;
+            max-width: 100%;
         }
 
         .table-card {
             padding: 0;
             overflow: hidden;
+        }
+
+        .table-responsive {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .card h2,
@@ -289,16 +341,21 @@
             color: var(--text);
             font-size: 19px;
             font-weight: 700;
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif !important;
         }
 
         .form-label {
             color: var(--text);
             font-weight: 600;
+            font-size: 14px;
             margin-bottom: 6px;
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif !important;
         }
 
         .form-control,
         .form-select {
+            width: 100%;
+            max-width: 100%;
             min-height: 42px;
             color: var(--text);
             background: #111827;
@@ -346,6 +403,9 @@
             font-weight: 700;
             border: 1px solid transparent;
             box-shadow: none;
+            max-width: 100%;
+            white-space: normal;
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif !important;
         }
 
         .btn i,
@@ -426,6 +486,8 @@
             margin: 0;
             color: var(--text);
             border-color: var(--border);
+            min-width: 760px;
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif !important;
         }
 
         .app-table thead th {
@@ -571,6 +633,7 @@
         .file-name {
             color: var(--text);
             font-weight: 700;
+            overflow-wrap: anywhere;
         }
 
         .filter-grid {
@@ -622,6 +685,7 @@
         .resultado {
             color: var(--text);
             white-space: pre-wrap;
+            overflow-wrap: anywhere;
         }
 
         .descricao,
@@ -633,6 +697,7 @@
             padding: 14px;
             display: grid;
             gap: 10px;
+            max-width: 100%;
         }
 
         .arquivo-link,
@@ -678,7 +743,33 @@
             margin-top: 1.5rem !important;
         }
 
-        @@media (max-width: 900px) {
+        @@media (max-width: 992px) {
+            .app-shell {
+                width: min(100% - 24px, 960px);
+            }
+
+            .metric-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .panel-grid,
+            .details-grid,
+            .hero-panel,
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar-collapse {
+                padding-top: 12px;
+            }
+
+            .app-nav-links {
+                margin-left: 0;
+                margin-top: 12px;
+            }
+        }
+
+        @@media (max-width: 768px) {
             .page-header,
             .activity-item {
                 display: block;
@@ -687,6 +778,57 @@
             .page-actions,
             .actions {
                 margin-top: 12px;
+                width: 100%;
+            }
+
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .user-chip {
+                margin-top: 12px;
+                align-items: flex-start;
+            }
+
+            .page-actions .btn,
+            .actions .btn {
+                width: 100%;
+            }
+
+            .form-card,
+            .card,
+            .surface,
+            .panel,
+            .filters {
+                padding: 16px;
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .app-shell {
+                width: calc(100% - 20px);
+            }
+
+            .layout-auth .app-shell {
+                min-height: 100svh;
+                padding: 18px 0;
+            }
+
+            .app-main {
+                padding: 18px 0 32px;
+            }
+
+            .auth-card {
+                padding: 22px 18px;
+            }
+
+            .page-title {
+                font-size: 24px;
+                line-height: 1.2;
+            }
+
+            .auth-brand h1 {
+                font-size: 24px;
             }
 
             .metric-grid,
@@ -698,14 +840,30 @@
                 grid-template-columns: 1fr;
             }
 
-            .app-nav-links {
-                margin-left: 0;
-                margin-top: 12px;
+            .metric-value {
+                font-size: 26px;
+            }
+
+            .activity-item {
+                display: block;
+            }
+
+            .app-table {
+                min-width: 680px;
+            }
+
+            .btn {
+                width: 100%;
             }
 
             .user-chip {
                 margin-top: 12px;
                 align-items: flex-start;
+                width: 100%;
+            }
+
+            .user-chip .btn {
+                width: auto;
             }
         }
     </style>
@@ -762,7 +920,7 @@
                             <strong>@usuarioLogado</strong>
                             <small>@tipoUsuario</small>
                         </span>
-                        <a class="btn btn-outline-light btn-sm" href="@Url.Action("Logout", "Usuario")">
+                        <a class="btn btn-outline-light btn-sm" href="@Url.Action("Logout", "Usuario")" aria-label="Sair do sistema">
                             Sair
                         </a>
                     </div>

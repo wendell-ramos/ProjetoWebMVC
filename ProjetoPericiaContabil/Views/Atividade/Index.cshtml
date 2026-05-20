@@ -19,7 +19,7 @@
 
 @if (TempData["Erro"] != null)
 {
-    <div class="alert alert-danger">@TempData["Erro"]</div>
+    <div class="alert alert-danger" role="alert">@TempData["Erro"]</div>
 }
 
 <section class="card table-card">
@@ -27,10 +27,10 @@
         <table class="table app-table">
             <thead>
                 <tr>
-                    <th>T&iacute;tulo</th>
-                    <th>Tipo</th>
-                    <th>Status</th>
-                    <th>A&ccedil;&atilde;o</th>
+                    <th scope="col">T&iacute;tulo</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">A&ccedil;&atilde;o</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,10 +45,10 @@
                         <td><span class="status-badge @statusClass">@Html.Raw(statusText)</span></td>
                         <td>
                             <div class="table-actions">
-                                <a class="btn btn-secondary btn-sm" href="@Url.Action("Details", "Atividade", new { id = item.Id })">
+                                <a class="btn btn-secondary btn-sm" href="@Url.Action("Details", "Atividade", new { id = item.Id })" aria-label="Ver detalhes da atividade @item.Titulo">
                                     <i class="bi bi-eye"></i> Detalhes
                                 </a>
-                                <a class="btn btn-primary btn-sm" href="@Url.Action("Pegar", "Atividade", new { id = item.Id })">
+                                <a class="btn btn-primary btn-sm" href="@Url.Action("Pegar", "Atividade", new { id = item.Id })" aria-label="Pegar atividade @item.Titulo">
                                     <i class="bi bi-person-check"></i> Pegar
                                 </a>
                             </div>

@@ -19,7 +19,7 @@
 
 @if (TempData["Erro"] != null)
 {
-    <div class="alert alert-danger">@TempData["Erro"]</div>
+    <div class="alert alert-danger" role="alert">@TempData["Erro"]</div>
 }
 
 <section class="card table-card">
@@ -27,11 +27,11 @@
         <table class="table app-table">
             <thead>
                 <tr>
-                    <th>T&iacute;tulo</th>
-                    <th>Descri&ccedil;&atilde;o</th>
-                    <th>Tipo</th>
-                    <th>Arquivo</th>
-                    <th>A&ccedil;&atilde;o</th>
+                    <th scope="col">T&iacute;tulo</th>
+                    <th scope="col">Descri&ccedil;&atilde;o</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Arquivo</th>
+                    <th scope="col">A&ccedil;&atilde;o</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,7 +44,7 @@
                         <td>
                             @if (!string.IsNullOrEmpty(item.ArquivoClienteCaminho))
                             {
-                                <a class="arquivo-link" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = item.Id })">
+                                <a class="arquivo-link" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = item.Id })" aria-label="Baixar arquivo do cliente da atividade @item.Titulo">
                                     <i class="bi bi-download"></i> Arquivo do cliente
                                 </a>
                             }
@@ -55,10 +55,10 @@
                         </td>
                         <td>
                             <div class="table-actions">
-                                <a class="btn btn-secondary btn-sm" href="@Url.Action("Details", "Atividade", new { id = item.Id })">
+                                <a class="btn btn-secondary btn-sm" href="@Url.Action("Details", "Atividade", new { id = item.Id })" aria-label="Ver detalhes da atividade @item.Titulo">
                                     <i class="bi bi-eye"></i> Detalhes
                                 </a>
-                                <a class="btn btn-primary btn-sm" href="@Url.Action("Pegar", "Atividade", new { id = item.Id })">
+                                <a class="btn btn-primary btn-sm" href="@Url.Action("Pegar", "Atividade", new { id = item.Id })" aria-label="Pegar atividade @item.Titulo">
                                     <i class="bi bi-person-check"></i> Pegar
                                 </a>
                             </div>

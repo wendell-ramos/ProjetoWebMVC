@@ -11,7 +11,7 @@
         <p class="page-subtitle">Informe o resultado pericial e anexe o arquivo final quando houver documenta&ccedil;&atilde;o complementar.</p>
     </div>
     <div class="page-actions">
-        <a class="btn btn-secondary" href="@Url.Action("MinhasFuncionario", "Atividade")">
+        <a class="btn btn-secondary" href="@Url.Action("MinhasFuncionario", "Atividade")" aria-label="Voltar para minhas atividades">
             <i class="bi bi-arrow-left"></i> Voltar
         </a>
     </div>
@@ -20,7 +20,7 @@
 <section class="form-card">
     @if (ViewBag.Erro != null)
     {
-        <div class="alert alert-danger">@ViewBag.Erro</div>
+        <div class="alert alert-danger" role="alert">@ViewBag.Erro</div>
     }
 
     <div class="info-box p-3 mb-3">
@@ -37,28 +37,29 @@
     {
         <div class="file-card">
             <span class="file-name">@Model.ArquivoClienteNome</span>
-            <a class="btn btn-secondary btn-sm" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = Model.Id })">
+            <a class="btn btn-secondary btn-sm" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = Model.Id })" aria-label="Baixar arquivo enviado pelo cliente">
                 <i class="bi bi-download"></i> Baixar arquivo do cliente
             </a>
         </div>
     }
 
-    <form method="post" enctype="multipart/form-data" class="d-grid gap-3">
+    <form method="post" enctype="multipart/form-data" class="d-grid gap-3" aria-label="Formul&aacute;rio para finalizar atividade">
         <input type="hidden" name="Id" value="@Model.Id" />
 
         <div>
-            <label class="form-label">Resultado</label>
-            <textarea class="form-control" name="Resultado" placeholder="Descreva o resultado da atividade..." required></textarea>
+            <label class="form-label" for="Resultado">Resultado</label>
+            <textarea class="form-control" id="Resultado" name="Resultado" placeholder="Descreva o resultado da atividade..." required></textarea>
         </div>
 
         <div>
-            <label class="form-label">Arquivo de Resultado</label>
-            <input class="form-control" type="file" name="arquivoResultado" accept=".pdf,.doc,.docx,.xls,.xlsx" />
+            <label class="form-label" for="arquivoResultado">Arquivo de Resultado</label>
+            <input class="form-control" type="file" id="arquivoResultado" name="arquivoResultado" accept=".pdf,.doc,.docx,.xls,.xlsx" aria-describedby="arquivoResultadoAjuda" />
+            <div class="form-text text-muted-app" id="arquivoResultadoAjuda">PDF, DOC, DOCX, XLS ou XLSX. Tamanho m&aacute;ximo de 10 MB.</div>
         </div>
 
         <div class="actions justify-content-between">
-            <a class="btn btn-secondary" href="@Url.Action("MinhasFuncionario", "Atividade")">Cancelar</a>
-            <button type="submit" class="btn btn-primary">
+            <a class="btn btn-secondary" href="@Url.Action("MinhasFuncionario", "Atividade")" aria-label="Cancelar finaliza&ccedil;&atilde;o da atividade">Cancelar</a>
+            <button type="submit" class="btn btn-primary" aria-label="Finalizar atividade">
                 <i class="bi bi-check2-circle"></i> Finalizar
             </button>
         </div>

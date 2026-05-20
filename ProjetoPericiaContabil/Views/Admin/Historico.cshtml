@@ -21,7 +21,7 @@
 
 @if (TempData["Erro"] != null)
 {
-    <div class="alert alert-danger">@TempData["Erro"]</div>
+    <div class="alert alert-danger" role="alert">@TempData["Erro"]</div>
 }
 
 <section class="filters mb-4">
@@ -29,18 +29,18 @@
     {
         <div class="filter-grid">
             <div>
-                <label class="form-label">Usu&aacute;rio</label>
-                <input class="form-control" type="text" name="nomeUsuario" value="@ViewBag.NomeUsuario" placeholder="Nome do usu&aacute;rio" />
+                <label class="form-label" for="nomeUsuario">Usu&aacute;rio</label>
+                <input class="form-control" type="text" id="nomeUsuario" name="nomeUsuario" value="@ViewBag.NomeUsuario" placeholder="Nome do usu&aacute;rio" />
             </div>
 
             <div>
-                <label class="form-label">A&ccedil;&atilde;o</label>
-                <input class="form-control" type="text" name="acao" value="@ViewBag.Acao" placeholder="Ex.: finalizou" />
+                <label class="form-label" for="acao">A&ccedil;&atilde;o</label>
+                <input class="form-control" type="text" id="acao" name="acao" value="@ViewBag.Acao" placeholder="Ex.: finalizou" />
             </div>
 
             <div>
-                <label class="form-label">Tipo do usu&aacute;rio</label>
-                <select class="form-select" name="tipoUsuario">
+                <label class="form-label" for="tipoUsuario">Tipo do usu&aacute;rio</label>
+                <select class="form-select" id="tipoUsuario" name="tipoUsuario">
                     <option value="">Todos</option>
                     <option value="Admin" @(ViewBag.TipoUsuario == "Admin" ? "selected" : "")>Admin</option>
                     <option value="Cliente" @(ViewBag.TipoUsuario == "Cliente" ? "selected" : "")>Cliente</option>
@@ -49,20 +49,20 @@
             </div>
 
             <div>
-                <label class="form-label">Data inicial</label>
-                <input class="form-control" type="date" name="dataInicial" value="@ViewBag.DataInicial" />
+                <label class="form-label" for="dataInicial">Data inicial</label>
+                <input class="form-control" type="date" id="dataInicial" name="dataInicial" value="@ViewBag.DataInicial" />
             </div>
 
             <div>
-                <label class="form-label">Data final</label>
-                <input class="form-control" type="date" name="dataFinal" value="@ViewBag.DataFinal" />
+                <label class="form-label" for="dataFinal">Data final</label>
+                <input class="form-control" type="date" id="dataFinal" name="dataFinal" value="@ViewBag.DataFinal" />
             </div>
 
             <div class="actions">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary" aria-label="Filtrar hist&oacute;rico">
                     <i class="bi bi-funnel"></i> Filtrar
                 </button>
-                <a href="@Url.Action("Historico", "Admin")" class="btn btn-secondary">Limpar</a>
+                <a href="@Url.Action("Historico", "Admin")" class="btn btn-secondary" aria-label="Limpar filtros do hist&oacute;rico">Limpar</a>
             </div>
         </div>
     }
@@ -75,12 +75,12 @@
             <table class="table app-table">
                 <thead>
                     <tr>
-                        <th>Data/Hora</th>
-                        <th>Usu&aacute;rio</th>
-                        <th>Tipo</th>
-                        <th>Atividade</th>
-                        <th>A&ccedil;&atilde;o</th>
-                        <th>Descri&ccedil;&atilde;o</th>
+                        <th scope="col">Data/Hora</th>
+                        <th scope="col">Usu&aacute;rio</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Atividade</th>
+                        <th scope="col">A&ccedil;&atilde;o</th>
+                        <th scope="col">Descri&ccedil;&atilde;o</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,7 +94,7 @@
                                 @if (item.AtividadeId.HasValue)
                                 {
                                     var titulo = atividadesLookup.ContainsKey(item.AtividadeId.Value) ? atividadesLookup[item.AtividadeId.Value] : "Atividade";
-                                    <a class="link" href="@Url.Action("Details", "Atividade", new { id = item.AtividadeId.Value })">
+                                    <a class="link" href="@Url.Action("Details", "Atividade", new { id = item.AtividadeId.Value })" aria-label="Ver detalhes da atividade #@item.AtividadeId">
                                         #@item.AtividadeId - @titulo
                                     </a>
                                 }

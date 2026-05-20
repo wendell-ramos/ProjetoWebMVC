@@ -11,7 +11,7 @@
         <p class="page-subtitle">Atualize o texto do resultado antes da confirma&ccedil;&atilde;o de leitura pelo cliente.</p>
     </div>
     <div class="page-actions">
-        <a class="btn btn-secondary" href="@Url.Action("MinhasFuncionario", "Atividade")">
+        <a class="btn btn-secondary" href="@Url.Action("MinhasFuncionario", "Atividade")" aria-label="Voltar para minhas atividades">
             <i class="bi bi-arrow-left"></i> Voltar
         </a>
     </div>
@@ -28,17 +28,17 @@
         <div class="descricao-box p-3">@Model.Descricao</div>
     </div>
 
-    <form method="post" class="d-grid gap-3">
+    <form method="post" class="d-grid gap-3" aria-label="Formul&aacute;rio para editar resultado">
         <input type="hidden" name="Id" value="@Model.Id" />
 
         <div>
-            <label class="form-label">Resultado</label>
-            <textarea class="form-control" name="Resultado" required>@Model.Resultado</textarea>
+            <label class="form-label" for="Resultado">Resultado</label>
+            <textarea class="form-control" id="Resultado" name="Resultado" required>@Model.Resultado</textarea>
         </div>
 
         <div class="actions justify-content-between">
-            <a class="btn btn-secondary" href="@Url.Action("MinhasFuncionario", "Atividade")">Cancelar</a>
-            <button type="submit" class="btn btn-primary">
+            <a class="btn btn-secondary" href="@Url.Action("MinhasFuncionario", "Atividade")" aria-label="Cancelar edi&ccedil;&atilde;o do resultado">Cancelar</a>
+            <button type="submit" class="btn btn-primary" aria-label="Salvar altera&ccedil;&otilde;es do resultado">
                 <i class="bi bi-save"></i> Salvar Altera&ccedil;&otilde;es
             </button>
         </div>

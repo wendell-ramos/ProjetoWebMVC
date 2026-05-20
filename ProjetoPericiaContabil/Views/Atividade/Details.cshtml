@@ -42,7 +42,7 @@
     </div>
     <div class="page-actions">
         <span class="status-badge @statusClass">@Model.Status</span>
-        <a class="btn btn-secondary" href="@Url.Action(voltarAction, voltarController)">
+        <a class="btn btn-secondary" href="@Url.Action(voltarAction, voltarController)" aria-label="Voltar para a lista">
             <i class="bi bi-arrow-left"></i> Voltar
         </a>
     </div>
@@ -108,7 +108,7 @@
                     <span class="file-name"><i class="bi bi-paperclip"></i> @Model.ArquivoClienteNome</span>
                     @if (Model.PodeBaixarArquivoCliente)
                     {
-                        <a class="btn btn-primary" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = Model.Id })">
+                        <a class="btn btn-primary" href="@Url.Action("BaixarArquivoCliente", "Atividade", new { id = Model.Id })" aria-label="Baixar arquivo enviado pelo cliente">
                             <i class="bi bi-download"></i> Baixar arquivo do cliente
                         </a>
                     }
@@ -128,7 +128,7 @@
                     <span class="file-name"><i class="bi bi-file-earmark-check"></i> @Model.ArquivoResultadoNome</span>
                     @if (Model.PodeBaixarArquivoResultado)
                     {
-                        <a class="btn btn-primary" href="@Url.Action("BaixarArquivoResultado", "Atividade", new { id = Model.Id })">
+                        <a class="btn btn-primary" href="@Url.Action("BaixarArquivoResultado", "Atividade", new { id = Model.Id })" aria-label="Baixar arquivo de resultado">
                             <i class="bi bi-download"></i> Baixar resultado
                         </a>
                     }
@@ -146,19 +146,19 @@
                 <div class="actions">
                     @if (Model.PodeEditarResultado)
                     {
-                        <a class="btn btn-primary" href="@Url.Action("EditarResultado", "Atividade", new { id = Model.Id })">
+                        <a class="btn btn-primary" href="@Url.Action("EditarResultado", "Atividade", new { id = Model.Id })" aria-label="Editar resultado da atividade">
                             <i class="bi bi-pencil-square"></i> Editar resultado
                         </a>
                     }
                     @if (Model.PodeFinalizar)
                     {
-                        <a class="btn btn-primary" href="@Url.Action("Finalizar", "Atividade", new { id = Model.Id })">
+                        <a class="btn btn-primary" href="@Url.Action("Finalizar", "Atividade", new { id = Model.Id })" aria-label="Finalizar atividade">
                             <i class="bi bi-check2-circle"></i> Finalizar
                         </a>
                     }
                     @if (Model.PodeConfirmarLeitura)
                     {
-                        <a class="btn btn-primary" href="@Url.Action("ConfirmarLeitura", "Atividade", new { id = Model.Id })">
+                        <a class="btn btn-primary" href="@Url.Action("ConfirmarLeitura", "Atividade", new { id = Model.Id })" aria-label="Confirmar leitura do resultado">
                             <i class="bi bi-check2"></i> Confirmar leitura
                         </a>
                     }
