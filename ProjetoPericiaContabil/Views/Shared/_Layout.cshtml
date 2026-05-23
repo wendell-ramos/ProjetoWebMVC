@@ -866,6 +866,100 @@
                 width: auto;
             }
         }
+
+        @@media print {
+            @@page {
+                margin: 0;
+            }
+
+            .no-print,
+            .no-print *,
+            body > nav,
+            body > nav *,
+            nav.navbar,
+            nav.navbar *,
+            .navbar,
+            .navbar *,
+            .app-navbar,
+            .app-navbar *,
+            .navbar-brand,
+            .navbar-brand *,
+            .brand-lockup,
+            .brand-lockup *,
+            .navbar-toggler,
+            .navbar-toggler *,
+            .navbar-toggler-icon,
+            .app-nav-links,
+            .app-nav-links *,
+            .navbar-collapse,
+            .navbar-collapse *,
+            .user-chip,
+            .user-chip * {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                max-height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: 0 !important;
+                overflow: hidden !important;
+            }
+
+            html,
+            body {
+                background: #0b1220 !important;
+                color: #f8fafc !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .app-main,
+            main,
+            .app-shell,
+            .container,
+            .container-fluid {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #0b1220 !important;
+                color: #f8fafc !important;
+            }
+
+            body > nav,
+            body > .navbar,
+            body > .app-navbar,
+            nav.no-print,
+            .app-navbar.no-print {
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 0 !important;
+                min-height: 0 !important;
+                height: 0 !important;
+                line-height: 0 !important;
+            }
+
+            .app-main {
+                padding-top: 0 !important;
+                margin-top: 0 !important;
+            }
+
+            .app-main > .app-shell {
+                padding: 10mm !important;
+            }
+
+            .page-title,
+            h1,
+            h2,
+            h3 {
+                color: #f8fafc !important;
+            }
+
+            .page-subtitle {
+                color: #cbd5e1 !important;
+            }
+        }
     </style>
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -878,9 +972,9 @@
 
     @if (estaLogado)
     {
-        <nav class="navbar navbar-expand-lg app-navbar">
-            <div class="container-fluid app-shell">
-                <a class="navbar-brand brand-lockup" href="@Url.Action("Index", "Home")">
+        <nav class="navbar navbar-expand-lg app-navbar no-print">
+            <div class="container-fluid app-shell no-print">
+                <a class="navbar-brand brand-lockup no-print" href="@Url.Action("Index", "Home")">
                     <span class="brand-mark"><i class="bi bi-bank"></i></span>
                     <span>
                         <strong>Per&iacute;cia Cont&aacute;bil</strong>
@@ -888,11 +982,11 @@
                     </span>
                 </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Alternar navega&ccedil;&atilde;o">
-                    <span class="navbar-toggler-icon"></span>
+                <button class="navbar-toggler no-print" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Alternar navega&ccedil;&atilde;o">
+                    <span class="navbar-toggler-icon no-print"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="mainNav">
+                <div class="collapse navbar-collapse no-print" id="mainNav">
                     <ul class="navbar-nav app-nav-links me-auto">
                         @if (tipoUsuario == "Admin")
                         {

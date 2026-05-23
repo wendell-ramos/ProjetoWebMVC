@@ -892,3 +892,313 @@ input[type="file"] {
         width: 100%;
     }
 }
+
+.no-print {
+}
+
+@media print {
+    @page {
+        margin: 0;
+    }
+
+    html,
+    body {
+        width: 100% !important;
+        min-height: auto !important;
+        overflow: visible !important;
+        color: #f8fafc !important;
+        background: #0b1220 !important;
+        font-size: 11pt !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    body::before,
+    body::after,
+    .app-background,
+    .no-print,
+    .app-navbar,
+    .navbar,
+    .navbar-collapse,
+    .navbar-toggler,
+    .app-nav-links,
+    .user-chip,
+    .page-actions,
+    .actions,
+    .table-actions,
+    .header-buttons,
+    .filters,
+    .auth-link,
+    .btn,
+    button,
+    input[type="submit"],
+    input[type="button"],
+    input[type="file"],
+    .form-text,
+    .metric-icon,
+    .feature-item i,
+    .arquivo-link {
+        display: none !important;
+    }
+
+    .app-main,
+    .auth-main,
+    .app-shell,
+    .container,
+    .container-fluid {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+    }
+
+    .app-main > .app-shell {
+        padding: 10mm !important;
+    }
+
+    .page-header {
+        display: block !important;
+        margin: 0 0 14px !important;
+        padding: 0 0 8px !important;
+        border-bottom: 1px solid #d1d5db !important;
+    }
+
+    .page-title,
+    .hero-title,
+    h1 {
+        margin: 0 0 6px !important;
+        color: #111827 !important;
+        font-size: 18pt !important;
+        line-height: 1.2 !important;
+    }
+
+    h2,
+    h3 {
+        color: #111827 !important;
+        font-size: 13pt !important;
+    }
+
+    .page-subtitle,
+    .text-muted-app,
+    .empty,
+    .arquivo-vazio,
+    .metric-label,
+    .activity-meta,
+    .history-date,
+    .meta span {
+        color: #374151 !important;
+    }
+
+    .auth-card,
+    .card,
+    .form-card,
+    .surface,
+    .panel,
+    .metric-card,
+    .info-box,
+    .descricao-box,
+    .file-card,
+    .meta,
+    .activity-item,
+    .history-item,
+    .feature-item {
+        color: #111827 !important;
+        background: #ffffff !important;
+        border: 1px solid #d1d5db !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .auth-card,
+    .card,
+    .form-card,
+    .surface,
+    .panel,
+    .metric-card {
+        padding: 10px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .details-grid,
+    .meta-grid,
+    .metric-grid,
+    .panel-grid,
+    .filter-grid,
+    .hero-panel {
+        display: block !important;
+    }
+
+    .metric-card {
+        display: inline-block !important;
+        width: 24% !important;
+        vertical-align: top !important;
+    }
+
+    .metric-value {
+        color: #111827 !important;
+        font-size: 16pt !important;
+    }
+
+    .text-block,
+    .descricao,
+    .resultado,
+    .activity-title,
+    .file-name,
+    strong,
+    p,
+    span,
+    div,
+    td,
+    th,
+    label {
+        color: #111827 !important;
+    }
+
+    a {
+        color: #111827 !important;
+        text-decoration: none !important;
+    }
+
+    .table-responsive {
+        overflow: visible !important;
+    }
+
+    .app-table,
+    .table {
+        width: 100% !important;
+        min-width: 0 !important;
+        border-collapse: collapse !important;
+        color: #111827 !important;
+        font-size: 9pt !important;
+    }
+
+    .app-table thead th,
+    .table thead th {
+        color: #111827 !important;
+        background: #f3f4f6 !important;
+        border: 1px solid #9ca3af !important;
+        font-weight: 700 !important;
+    }
+
+    .app-table tbody td,
+    .table tbody td {
+        color: #111827 !important;
+        background: #ffffff !important;
+        border: 1px solid #d1d5db !important;
+        vertical-align: top !important;
+    }
+
+    .status-badge,
+    .badge {
+        color: #111827 !important;
+        background: #ffffff !important;
+        border: 1px solid #9ca3af !important;
+        padding: 2px 6px !important;
+    }
+
+    .usuarios-admin-table .col-acao,
+    .usuarios-admin-table .acao-cell {
+        display: none !important;
+    }
+
+    .file-card {
+        padding: 8px !important;
+    }
+
+    .history-list,
+    .activity-list,
+    .feature-list {
+        display: block !important;
+    }
+
+    .history-item,
+    .activity-item,
+    .feature-item {
+        margin-bottom: 8px !important;
+        padding: 8px !important;
+    }
+}
+
+@media print {
+    .no-print,
+    .no-print *,
+    nav,
+    nav *,
+    header,
+    header *,
+    .navbar,
+    .navbar *,
+    .topbar,
+    .topbar *,
+    .app-navbar,
+    .app-navbar *,
+    .menu,
+    .menu *,
+    .sidebar,
+    .sidebar *,
+    .hamburger,
+    .hamburger *,
+    .navbar-toggler,
+    .navbar-toggler *,
+    .navbar-brand,
+    .navbar-brand *,
+    .brand-lockup,
+    .brand-lockup *,
+    .app-nav-links,
+    .app-nav-links *,
+    .user-chip,
+    .user-chip * {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        overflow: hidden !important;
+    }
+
+    html,
+    body {
+        background: #0b1220 !important;
+        color: #f8fafc !important;
+    }
+
+    main,
+    .container,
+    .container-fluid,
+    .app-page,
+    .content,
+    .page-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #0b1220 !important;
+        color: #f8fafc !important;
+    }
+
+    body > nav,
+    body > .navbar,
+    body > .app-navbar,
+    nav.no-print,
+    .app-navbar.no-print {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 0 !important;
+        min-height: 0 !important;
+        height: 0 !important;
+        line-height: 0 !important;
+    }
+
+    .app-main {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+}
